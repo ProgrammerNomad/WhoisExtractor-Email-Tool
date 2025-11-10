@@ -1,17 +1,54 @@
 /**
  * Background Service Worker
- * Brokers communication between popup and offscreen page
+ * Opens tool tab on icon click
+ * Brokers communication between tool page and offscreen page
  * Manages offscreen page lifecycle
  */
 
 import type { Message, StartMessage } from "../types";
 
 // Port connections
-const popupPorts = new Map<string, chrome.runtime.Port>();
+const toolPorts = new Map<string, chrome.runtime.Port>();
 let offscreenPort: chrome.runtime.Port | null = null;
 
 // Offscreen page state
 let offscreenPageCreated = false;
+
+/**
+ * Open or focus the tool page tab
+ */
+async function openToolPage(): Promise<void> {
+  const toolUrl = chrome.runtime.getURL("tabs/index.html");
+  
+  // Check if tool page is already open
+  const tabs = await chrome.tabs.query({});
+  const existingTab = tabs.find(tab => tab.url === toolUrl);
+  
+  if (existingTab && existingTab.id) {
+    // Focus existing tab
+    await chrome.tabs.update(existingTab.id, { active: true });
+    await chrome.windows.update(existingTab.windowId!, { focused: true });
+  } else {
+    // Open new tab
+    await chrome.tabs.create({ url: toolUrl });
+  }
+}
+
+/**
+ * Handle extension icon click
+ */
+chrome.action.onClicked.addListener(() => {
+  openToolPage();
+});
+
+/**
+ * Handle keyboard shortcut
+ */
+chrome.commands.onCommand.addListener((command) => {
+  if (command === "open-tool-page") {
+    openToolPage();
+  }
+});
 
 /**
  * Create offscreen document if it doesn't exist
@@ -48,32 +85,32 @@ async function ensureOffscreenPage(): Promise<void> {
 }
 
 /**
- * Handle port connections from popup and offscreen
+ * Handle port connections from tool page and offscreen
  */
 chrome.runtime.onConnect.addListener((port) => {
   console.log("Background: Port connected:", port.name);
 
-  if (port.name === "popup") {
-    handlePopupConnection(port);
+  if (port.name === "tool") {
+    handleToolConnection(port);
   } else if (port.name === "offscreen") {
     handleOffscreenConnection(port);
   }
 });
 
 /**
- * Handle popup port connection
+ * Handle tool page port connection
  */
-function handlePopupConnection(port: chrome.runtime.Port): void {
-  const portId = `popup-${Date.now()}`;
-  popupPorts.set(portId, port);
+function handleToolConnection(port: chrome.runtime.Port): void {
+  const portId = `tool-${Date.now()}`;
+  toolPorts.set(portId, port);
 
   port.onMessage.addListener(async (message: Message) => {
-    await handlePopupMessage(message, portId);
+    await handleToolMessage(message, portId);
   });
 
   port.onDisconnect.addListener(() => {
-    console.log("Background: Popup disconnected:", portId);
-    popupPorts.delete(portId);
+    console.log("Background: Tool page disconnected:", portId);
+    toolPorts.delete(portId);
   });
 }
 
@@ -84,12 +121,12 @@ function handleOffscreenConnection(port: chrome.runtime.Port): void {
   offscreenPort = port;
 
   port.onMessage.addListener((message: Message) => {
-    // Relay messages from offscreen to all connected popups
-    popupPorts.forEach((popupPort) => {
+    // Relay messages from offscreen to all connected tool pages
+    toolPorts.forEach((toolPort) => {
       try {
-        popupPort.postMessage(message);
+        toolPort.postMessage(message);
       } catch (error) {
-        console.error("Background: Failed to relay to popup:", error);
+        console.error("Background: Failed to relay to tool page:", error);
       }
     });
   });
@@ -102,9 +139,9 @@ function handleOffscreenConnection(port: chrome.runtime.Port): void {
 }
 
 /**
- * Handle messages from popup
+ * Handle messages from tool page
  */
-async function handlePopupMessage(
+async function handleToolMessage(
   message: Message,
   portId: string
 ): Promise<void> {
@@ -118,12 +155,12 @@ async function handlePopupMessage(
       }
     }
   } catch (error) {
-    console.error("Background: Error handling popup message:", error);
+    console.error("Background: Error handling tool message:", error);
 
-    // Send error back to popup
-    const popupPort = popupPorts.get(portId);
-    if (popupPort) {
-      popupPort.postMessage({
+    // Send error back to tool page
+    const toolPort = toolPorts.get(portId);
+    if (toolPort) {
+      toolPort.postMessage({
         type: "error",
         id: message.id || "unknown",
         message: error instanceof Error ? error.message : "Unknown error",

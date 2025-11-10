@@ -47,6 +47,14 @@
     "permissions": [
       "storage",
       "offscreen"
-    ]
+    ],
+    "commands": {
+      "open-tool-page": {
+        "suggested_key": {
+          "default": "Ctrl+Shift+E"
+        },
+        "description": "Open WhoisExtractor Tool Page"
+      }
+    }
   }
 }

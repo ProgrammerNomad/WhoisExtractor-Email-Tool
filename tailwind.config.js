@@ -1,24 +1,34 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{tsx,ts,html,css}"],
-  darkMode: "media",
+  darkMode: "class",
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        sans: ["Open Sans", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       colors: {
-        primary: {
-          50: '#eff6ff',
-          100: '#dbeafe',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#60a5fa',
-          500: '#3b82f6',
-          600: '#2563eb',
-          700: '#1d4ed8',
-          800: '#1e40af',
-          900: '#1e3a8a',
+        // Brand colors (light mode)
+        brand: {
+          blue: "#0066CC",
+          darkBlue: "#004999",
+          lightBlue: "#E6F2FF",
+          green: "#28A745",
+          red: "#DC3545",
+        },
+        // Background colors
+        bg: {
+          primary: "#F8F9FA",
+          secondary: "#FFFFFF",
+        },
+        // Border colors
+        border: {
+          gray: "#DEE2E6",
+        },
+        // Text colors
+        text: {
+          dark: "#212529",
+          muted: "#6C757D",
         },
       },
     },
