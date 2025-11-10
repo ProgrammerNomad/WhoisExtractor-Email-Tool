@@ -18,74 +18,11 @@ export const useExtractor = () => {
     error: null,
   });
 
-  const portRef = useRef<chrome.runtime.Port | null>(null);
-  const sessionIdRef = useRef<string | null>(null);
-
-  // Connect to background service worker
-  useEffect(() => {
-    const port = chrome.runtime.connect({ name: "tool" });
-    portRef.current = port;
-
-    port.onMessage.addListener((message) => {
-      if (message.type === "batch") {
-        // Streaming batch of emails
-        setState((prev) => ({
-          ...prev,
-          results: [...prev.results, ...message.emails],
-          progress: message.progressPercent,
-          totalCount: message.totalCount,
-        }));
-      } else if (message.type === "complete") {
-        // Extraction completed
-        setState((prev) => ({
-          ...prev,
-          isExtracting: false,
-          progress: 100,
-        }));
-      } else if (message.type === "error") {
-        // Error occurred
-        setState((prev) => ({
-          ...prev,
-          isExtracting: false,
-          error: message.message,
-        }));
-      } else if (message.type === "memoryWarning") {
-        // Memory warning
-        const shouldContinue = confirm(
-          `Memory usage high: ${message.message}\n\nContinue extraction?`
-        );
-        if (shouldContinue) {
-          port.postMessage({
-            type: "memoryWarning-continue",
-            id: sessionIdRef.current,
-          });
-        } else {
-          handleCancel();
-        }
-      }
-    });
-
-    port.onDisconnect.addListener(() => {
-      console.log("Disconnected from background");
-      portRef.current = null;
-    });
-
-    return () => {
-      port.disconnect();
-    };
-  }, []);
+  // Note: Port connection disabled - using client-side extraction for now
+  // Background worker communication will be implemented later
 
   const startExtraction = useCallback(
     (input: string, options: ExtractionOptions) => {
-      if (!portRef.current) {
-        console.error("Port not connected");
-        return;
-      }
-
-      // Generate session ID
-      const sessionId = `session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-      sessionIdRef.current = sessionId;
-
       // Reset state
       setState({
         isExtracting: true,
@@ -95,28 +32,91 @@ export const useExtractor = () => {
         error: null,
       });
 
-      // Send extraction request
-      portRef.current.postMessage({
-        type: "start",
-        id: sessionId,
-        input,
-        options,
-      });
+      // Perform client-side extraction
+      setTimeout(() => {
+        try {
+          // Improved email regex with word boundaries to avoid capturing invalid prefixes
+          const emailRegex = /\b[a-zA-Z0-9][a-zA-Z0-9._%+-]*@[a-zA-Z0-9][a-zA-Z0-9.-]*\.[a-zA-Z]{2,}\b/g;
+          const matches = input.match(emailRegex) || [];
+          
+          let emails = matches.map(email => {
+            // Clean up any trailing dots or hyphens
+            return email.replace(/[.-]+$/, '').toLowerCase();
+          });
+          
+          // Apply dedupe
+          if (options.dedupe) {
+            emails = [...new Set(emails)];
+          }
+          
+          // Apply keyword filter if enabled
+          if (options.keywordsEnabled && options.keywords.length > 0) {
+            emails = emails.filter(email => {
+              return !options.keywords.some(keyword => 
+                email.toLowerCase().includes(keyword.toLowerCase())
+              );
+            });
+          }
+          
+          // Apply string filter
+          if (options.filterStrings.length > 0) {
+            if (options.filterType === "include") {
+              emails = emails.filter(email => 
+                options.filterStrings.some(str => 
+                  email.toLowerCase().includes(str.toLowerCase())
+                )
+              );
+            } else {
+              emails = emails.filter(email => 
+                !options.filterStrings.some(str => 
+                  email.toLowerCase().includes(str.toLowerCase())
+                )
+              );
+            }
+          }
+          
+          // Apply lowercase conversion
+          if (options.lowercase) {
+            emails = emails.map(email => email.toLowerCase());
+          }
+          
+          // Apply numeric domain removal
+          if (options.removeNumeric) {
+            emails = emails.filter(email => {
+              const domain = email.split('@')[1];
+              return domain && !/^\d+\.\d+\.\d+\.\d+$/.test(domain);
+            });
+          }
+          
+          // Apply sorting
+          if (options.sort) {
+            emails.sort();
+          }
+          
+          setState({
+            isExtracting: false,
+            progress: 100,
+            totalCount: emails.length,
+            results: emails,
+            error: null,
+          });
+        } catch (error) {
+          setState(prev => ({
+            ...prev,
+            isExtracting: false,
+            error: error instanceof Error ? error.message : "Extraction failed",
+          }));
+        }
+      }, 100);
     },
     []
   );
 
   const handleCancel = useCallback(() => {
-    if (portRef.current && sessionIdRef.current) {
-      portRef.current.postMessage({
-        type: "cancel",
-        id: sessionIdRef.current,
-      });
-      setState((prev) => ({
-        ...prev,
-        isExtracting: false,
-      }));
-    }
+    setState((prev) => ({
+      ...prev,
+      isExtracting: false,
+    }));
   }, []);
 
   const clearResults = useCallback(() => {
@@ -127,7 +127,6 @@ export const useExtractor = () => {
       results: [],
       error: null,
     });
-    sessionIdRef.current = null;
   }, []);
 
   return {
