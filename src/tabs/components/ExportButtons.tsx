@@ -58,7 +58,7 @@ export const ExportButtons: React.FC<ExportButtonsProps> = ({
       <button
         onClick={handleCopy}
         disabled={isDisabled}
-        className="flex-1 px-6 py-3 bg-brand-green text-white rounded-lg hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all duration-200 font-semibold shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+        className="flex-1 px-6 py-3 bg-brand-green text-white rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:text-gray-200 dark:disabled:bg-gray-600 dark:disabled:text-gray-400 disabled:cursor-not-allowed transition-all duration-200 font-semibold shadow-md hover:shadow-lg flex items-center justify-center gap-2"
       >
         {copied ? (
           <>
@@ -99,7 +99,7 @@ export const ExportButtons: React.FC<ExportButtonsProps> = ({
       <button
         onClick={handleExportTxt}
         disabled={isDisabled}
-        className="px-6 py-3 bg-brand-blue text-white rounded-lg hover:bg-brand-darkBlue disabled:bg-gray-300 disabled:cursor-not-allowed transition-all duration-200 font-semibold shadow-md hover:shadow-lg"
+        className="px-6 py-3 bg-brand-blue text-white rounded-lg hover:bg-brand-darkBlue disabled:bg-gray-400 disabled:text-gray-200 dark:disabled:bg-gray-600 dark:disabled:text-gray-400 disabled:cursor-not-allowed transition-all duration-200 font-semibold shadow-md hover:shadow-lg"
         title="Export as .txt"
       >
         <i className="fas fa-file-alt mr-2"></i>
@@ -108,7 +108,7 @@ export const ExportButtons: React.FC<ExportButtonsProps> = ({
       <button
         onClick={handleExportCsv}
         disabled={isDisabled}
-        className="px-6 py-3 bg-brand-blue text-white rounded-lg hover:bg-brand-darkBlue disabled:bg-gray-300 disabled:cursor-not-allowed transition-all duration-200 font-semibold shadow-md hover:shadow-lg"
+        className="px-6 py-3 bg-brand-blue text-white rounded-lg hover:bg-brand-darkBlue disabled:bg-gray-400 disabled:text-gray-200 dark:disabled:bg-gray-600 dark:disabled:text-gray-400 disabled:cursor-not-allowed transition-all duration-200 font-semibold shadow-md hover:shadow-lg"
         title="Export as .csv"
       >
         <i className="fas fa-file-csv mr-2"></i>

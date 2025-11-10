@@ -16,6 +16,7 @@ function TabsIndex() {
     dedupe: true,
     separator: "\n",
     keywords: [],
+    keywordsEnabled: false,
     groupBy: "none",
     removeNumeric: true,
     extractionType: "email",

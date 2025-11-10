@@ -5,6 +5,7 @@ export interface ExtractionOptions {
   dedupe: boolean;
   separator: string;
   keywords: string[];
+  keywordsEnabled: boolean;
   groupBy: "domain" | "none" | "count";
   groupByCount?: number;
   removeNumeric: boolean;
@@ -315,13 +316,20 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
       {/* Keyword Filter */}
       <div className="bg-white shadow-md rounded-xl p-6 border border-border-gray">
         <div className="flex items-start justify-between mb-4">
-          <div>
-            <h3 className="text-lg font-bold text-text-dark">
-              Advanced Keyword Filter
-            </h3>
-            <p className="text-sm text-text-muted mt-1">
-              Remove unwanted emails containing specific keywords or patterns
-            </p>
+          <div className="flex-1">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-bold text-text-dark">
+                  Advanced Keyword Filter
+                </h3>
+                <p className="text-sm text-text-muted mt-1">
+                  Remove unwanted emails containing specific keywords or patterns
+                </p>
+              </div>
+              <div onClick={() => !isExtracting && setOptions({ ...options, keywordsEnabled: !options.keywordsEnabled })}>
+                <ToggleSwitch enabled={options.keywordsEnabled} disabled={isExtracting} />
+              </div>
+            </div>
           </div>
         </div>
 
@@ -334,12 +342,15 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
             onChange={(e) => handleKeywordsChange(e.target.value)}
             placeholder="whois,proxy,dns,spam..."
             rows={3}
-            disabled={isExtracting}
-            className="w-full px-4 py-3 border-2 border-border-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-brand-blue text-text-dark font-mono text-sm"
+            disabled={isExtracting || !options.keywordsEnabled}
+            className="w-full px-4 py-3 border-2 border-border-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-brand-blue text-text-dark font-mono text-sm disabled:opacity-50 disabled:cursor-not-allowed"
           />
           <div className="flex items-center justify-between mt-2">
             <p className="text-xs text-text-muted">
-              Separate keywords with commas for automatic filtering
+              {options.keywordsEnabled 
+                ? "Separate keywords with commas for automatic filtering"
+                : "Enable the filter to use keyword filtering"
+              }
             </p>
             <a
               href="https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool/issues"

@@ -50,6 +50,7 @@ export const useSettings = () => {
     dedupe: true,
     separator: "\n",
     keywords: settings.keywords,
+    keywordsEnabled: false,
     groupBy: "none",
     removeNumeric: settings.removeNumeric,
     extractionType: "email",

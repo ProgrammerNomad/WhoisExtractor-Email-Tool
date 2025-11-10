@@ -54,6 +54,13 @@ chrome.commands.onCommand.addListener((command) => {
  * Create offscreen document if it doesn't exist
  */
 async function ensureOffscreenPage(): Promise<void> {
+  // Temporarily disabled - handle extraction in background directly
+  // TODO: Implement proper offscreen page support with Plasmo
+  console.log("Background: Offscreen page creation skipped (not needed for basic extraction)");
+  offscreenPageCreated = true;
+  return;
+  
+  /* Original code - keep for future use
   if (offscreenPageCreated) {
     return;
   }
@@ -82,6 +89,7 @@ async function ensureOffscreenPage(): Promise<void> {
     console.error("Background: Failed to create offscreen page:", error);
     throw error;
   }
+  */
 }
 
 /**
@@ -176,9 +184,27 @@ async function handleToolMessage(
 async function handleStartMessage(message: StartMessage): Promise<void> {
   const { input, options, id } = message;
 
-  // Ensure offscreen page exists
+  // Ensure offscreen page exists (currently disabled)
   await ensureOffscreenPage();
 
+  // For now, send a message indicating extraction is not yet implemented
+  // This will be handled when we properly implement offscreen pages with Plasmo
+  console.log("Background: Extraction requested but offscreen page not available");
+  
+  // Send error back to tool page
+  toolPorts.forEach((toolPort) => {
+    try {
+      toolPort.postMessage({
+        type: "error",
+        id,
+        message: "Extraction feature is being set up. Please refresh the page and try again.",
+      });
+    } catch (error) {
+      console.error("Background: Failed to send error:", error);
+    }
+  });
+
+  /* Original implementation - keep for when offscreen is working
   // Wait a bit for offscreen port to connect
   if (!offscreenPort) {
     await new Promise((resolve) => setTimeout(resolve, 100));
@@ -218,6 +244,7 @@ async function handleStartMessage(message: StartMessage): Promise<void> {
       options,
     });
   }
+  */
 }
 
 /**

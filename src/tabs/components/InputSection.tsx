@@ -64,7 +64,7 @@ export const InputSection: React.FC<InputSectionProps> = ({
         <button
           onClick={onExtract}
           disabled={!input.trim() || isExtracting}
-          className="flex-1 px-6 py-3 bg-brand-blue text-white rounded-lg hover:bg-brand-darkBlue disabled:bg-gray-300 disabled:cursor-not-allowed transition-all duration-200 font-semibold shadow-md hover:shadow-lg"
+          className="flex-1 px-6 py-3 bg-brand-blue text-white rounded-lg hover:bg-brand-darkBlue disabled:bg-gray-400 disabled:text-gray-200 dark:disabled:bg-gray-600 dark:disabled:text-gray-400 disabled:cursor-not-allowed transition-all duration-200 font-semibold shadow-md hover:shadow-lg"
         >
           {isExtracting ? (
             <span className="flex items-center justify-center">
@@ -100,7 +100,7 @@ export const InputSection: React.FC<InputSectionProps> = ({
         <button
           onClick={onClear}
           disabled={isExtracting}
-          className="px-6 py-3 bg-brand-red text-white rounded-lg hover:bg-red-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all duration-200 font-semibold shadow-md hover:shadow-lg"
+          className="px-6 py-3 bg-brand-red text-white rounded-lg hover:bg-red-700 disabled:bg-gray-400 disabled:text-gray-200 dark:disabled:bg-gray-600 dark:disabled:text-gray-400 disabled:cursor-not-allowed transition-all duration-200 font-semibold shadow-md hover:shadow-lg"
         >
           <i className="fas fa-redo mr-2"></i>
           Reset
