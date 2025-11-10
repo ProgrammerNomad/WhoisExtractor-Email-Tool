@@ -342,7 +342,7 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
               Separate keywords with commas for automatic filtering
             </p>
             <a
-              href="https://github.com/whoisextractor/Filter-Keywords/issues"
+              href="https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool/issues"
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs text-brand-blue hover:text-brand-darkBlue hover:underline font-medium"

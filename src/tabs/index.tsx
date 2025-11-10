@@ -5,6 +5,7 @@ import { OptionsPanel, type ExtractionOptions } from "./components/OptionsPanel"
 import { ProgressBar } from "./components/ProgressBar";
 import { ResultsDisplay } from "./components/ResultsDisplay";
 import { ExportButtons } from "./components/ExportButtons";
+import { ThemeSwitcher } from "./components/ThemeSwitcher";
 import { useExtractor } from "./hooks/useExtractor";
 import { useSettings } from "./hooks/useSettings";
 
@@ -120,7 +121,7 @@ function TabsIndex() {
                 Extract email addresses from any raw text data with advanced filtering options
               </p>
             </div>
-            <div className="text-right">
+            <div className="flex items-center gap-4">
               {totalCount > 0 && (
                 <div className="bg-white bg-opacity-20 rounded-lg px-4 py-2">
                   <span className="text-2xl font-bold text-white">
@@ -131,6 +132,7 @@ function TabsIndex() {
                   </span>
                 </div>
               )}
+              <ThemeSwitcher />
             </div>
           </div>
         </div>
@@ -140,7 +142,7 @@ function TabsIndex() {
       <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
         {/* Error Message */}
         {error && (
-          <div className="mb-6 bg-red-50 border-l-4 border-brand-red rounded-lg p-4 shadow">
+          <div className="mb-6 bg-red-50 dark:bg-red-900/20 border-l-4 border-brand-red rounded-lg p-4 shadow">
             <div className="flex items-center">
               <svg
                 className="w-6 h-6 text-brand-red mr-3"

@@ -15,4 +15,76 @@
     padding: 0;
     background-color: #F8F9FA;
   }
+
+  /* Dark mode styles */
+  .dark body {
+    background-color: #1A1D23;
+  }
+
+  .dark {
+    color-scheme: dark;
+  }
 }
+
+@layer utilities {
+  /* Light mode backgrounds */
+  .bg-bg-primary {
+    @apply bg-[#F8F9FA];
+  }
+  .bg-bg-secondary {
+    @apply bg-white;
+  }
+
+  /* Dark mode backgrounds */
+  .dark .bg-bg-primary {
+    @apply bg-[#1A1D23];
+  }
+  .dark .bg-bg-secondary {
+    @apply bg-[#242930];
+  }
+
+  /* Light mode borders */
+  .border-border-gray {
+    @apply border-[#DEE2E6];
+  }
+
+  /* Dark mode borders */
+  .dark .border-border-gray {
+    @apply border-[#3D4451];
+  }
+
+  /* Light mode text */
+  .text-text-dark {
+    @apply text-[#212529];
+  }
+  .text-text-muted {
+    @apply text-[#6C757D];
+  }
+
+  /* Dark mode text */
+  .dark .text-text-dark {
+    @apply text-[#E8EAED];
+  }
+  .dark .text-text-muted {
+    @apply text-[#9AA0A6];
+  }
+
+  /* Dark mode cards */
+  .dark .bg-white {
+    @apply bg-[#242930];
+  }
+
+  /* Dark mode brand colors adjustments */
+  .dark .bg-brand-lightBlue {
+    @apply bg-[#1a3d5c];
+  }
+
+  .dark .bg-green-50 {
+    @apply bg-[#1a3329];
+  }
+
+  .dark .border-green-200 {
+    @apply border-[#2d5a45];
+  }
+}
+
