@@ -37,11 +37,16 @@ export const InputSection: React.FC<InputSectionProps> = ({
           onChange={(e) => setInput(e.target.value)}
           disabled={isExtracting}
         />
-        <div className="mt-2 flex items-center justify-between text-xs text-text-muted">
-          <span>Size: {(inputSize / 1024).toFixed(2)} KB</span>
+        <div className="mt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs text-text-muted">
+          <span className="whitespace-nowrap">
+            Size: {inputSize >= 1024 * 1024 
+              ? `${(inputSize / (1024 * 1024)).toFixed(2)} MB`
+              : `${(inputSize / 1024).toFixed(2)} KB`
+            }
+          </span>
           {isLargeInput && (
-            <span className="text-orange-600 font-semibold bg-orange-50 px-2 py-1 rounded">
-              ⚠ Large input - processing will run in background
+            <span className="text-orange-600 font-semibold bg-orange-50 dark:bg-orange-900/20 dark:text-orange-400 px-2 py-1 rounded whitespace-nowrap">
+              ⚠ Large file - background processing
             </span>
           )}
         </div>
