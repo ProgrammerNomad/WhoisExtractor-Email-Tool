@@ -29,62 +29,62 @@
 @layer utilities {
   /* Light mode backgrounds */
   .bg-bg-primary {
-    @apply bg-[#F8F9FA];
+    background-color: #F8F9FA;
   }
   .bg-bg-secondary {
-    @apply bg-white;
+    background-color: #ffffff;
   }
 
   /* Dark mode backgrounds */
   .dark .bg-bg-primary {
-    @apply bg-[#1A1D23];
+    background-color: #1A1D23;
   }
   .dark .bg-bg-secondary {
-    @apply bg-[#242930];
+    background-color: #242930;
   }
 
   /* Light mode borders */
   .border-border-gray {
-    @apply border-[#DEE2E6];
+    border-color: #DEE2E6;
   }
 
   /* Dark mode borders */
   .dark .border-border-gray {
-    @apply border-[#3D4451];
+    border-color: #3D4451;
   }
 
   /* Light mode text */
   .text-text-dark {
-    @apply text-[#212529];
+    color: #212529;
   }
   .text-text-muted {
-    @apply text-[#6C757D];
+    color: #6C757D;
   }
 
   /* Dark mode text */
   .dark .text-text-dark {
-    @apply text-[#E8EAED];
+    color: #E8EAED;
   }
   .dark .text-text-muted {
-    @apply text-[#9AA0A6];
+    color: #9AA0A6;
   }
 
-  /* Dark mode cards */
+  /* Dark mode cards - override bg-white */
   .dark .bg-white {
-    @apply bg-[#242930];
+    background-color: #242930 !important;
   }
 
   /* Dark mode brand colors adjustments */
   .dark .bg-brand-lightBlue {
-    @apply bg-[#1a3d5c];
+    background-color: #1a3d5c !important;
   }
 
   .dark .bg-green-50 {
-    @apply bg-[#1a3329];
+    background-color: #1a3329 !important;
   }
 
   .dark .border-green-200 {
-    @apply border-[#2d5a45];
+    border-color: #2d5a45;
   }
 }
 
