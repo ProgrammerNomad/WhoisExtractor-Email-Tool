@@ -8,9 +8,9 @@ import type { Translation } from "./en";
 export const ru: Translation = {
   // Header
   header: {
-    title: "Извлечение Email Адресов",
-    subtitle: "Получайте email-адреса из любого текста или файла с удобными продвинутыми фильтрами",
-    emailCount: "{{count}} Email",
+    title: "Email Address Extractor",
+  subtitle: "Получайте email-адреса из любого текста или файла с удобными продвинутыми фильтрами",
+    emailCount: "{{count}} Emails",
   },
 
   // Input Section

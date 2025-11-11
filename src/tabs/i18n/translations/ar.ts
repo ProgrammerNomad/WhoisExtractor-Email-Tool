@@ -8,7 +8,7 @@ import type { Translation } from "./en";
 export const ar: Translation = {
   // Header
   header: {
-    title: "مستخرج عناوين البريد الإلكتروني",
+    title: "Email Address Extractor",
     subtitle: "استخرج عناوين البريد من أي نص أو ملف بسرعة مع فلاتر متقدمة وسهلة",
     emailCount: "{{count}} بريد إلكتروني",
   },
