@@ -2,7 +2,7 @@
   "name": "whois-extractor-email-tool",
   "displayName": "WhoisExtractor: Email Tool",
   "version": "1.0.0",
-  "description": "Local email extraction from text and files (Chrome extension)",
+  "description": "Local email extraction from text and files",
   "author": "ProgrammerNomad",
   "license": "MIT",
   "scripts": {
