@@ -1,4 +1,5 @@
 import React from "react";
+import { useLanguage } from "../hooks/useLanguage";
 
 interface ResultsDisplayProps {
   results: string[];
@@ -13,6 +14,8 @@ export const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
   separator,
   groupByCount = 50,
 }) => {
+  const { t } = useLanguage();
+  
   const groupedResults = React.useMemo(() => {
     if (groupBy === "none") {
       return { all: results };
@@ -58,9 +61,9 @@ export const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
               d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
             />
           </svg>
-          <p className="text-lg font-medium text-text-dark">No emails extracted yet</p>
+          <p className="text-lg font-medium text-text-dark">{t.results.noResults}</p>
           <p className="text-sm mt-2 text-text-muted">
-            Paste text or upload a file to get started
+            {t.results.placeholder}
           </p>
         </div>
       </div>

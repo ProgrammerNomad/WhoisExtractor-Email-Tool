@@ -2,9 +2,10 @@
   "name": "whois-extractor-email-tool",
   "displayName": "WhoisExtractor: Email Tool",
   "version": "1.0.0",
-  "description": "Local email extraction from text and files",
+  "description": "Local email extraction from text and files - Multi-language support",
   "author": "ProgrammerNomad",
   "license": "MIT",
+  "default_locale": "en",
   "scripts": {
     "dev": "plasmo dev",
     "build": "plasmo build",

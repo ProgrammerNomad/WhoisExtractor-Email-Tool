@@ -1,4 +1,5 @@
 import React from "react";
+import { useLanguage } from "../hooks/useLanguage";
 
 interface ExportButtonsProps {
   results: string[];
@@ -11,6 +12,7 @@ export const ExportButtons: React.FC<ExportButtonsProps> = ({
   separator,
   disabled = false,
 }) => {
+  const { t } = useLanguage();
   const [copied, setCopied] = React.useState(false);
 
   const handleCopy = async () => {
@@ -75,7 +77,7 @@ export const ExportButtons: React.FC<ExportButtonsProps> = ({
                 d="M5 13l4 4L19 7"
               />
             </svg>
-            Copied!
+            {t.results.copied}
           </>
         ) : (
           <>
@@ -92,7 +94,7 @@ export const ExportButtons: React.FC<ExportButtonsProps> = ({
                 d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
               />
             </svg>
-            Copy to Clipboard
+            {t.results.copyButton}
           </>
         )}
       </button>
@@ -100,19 +102,19 @@ export const ExportButtons: React.FC<ExportButtonsProps> = ({
         onClick={handleExportTxt}
         disabled={isDisabled}
         className="px-6 py-3 bg-brand-blue text-white rounded-lg hover:bg-brand-darkBlue disabled:bg-gray-400 disabled:text-gray-200 dark:disabled:bg-gray-600 dark:disabled:text-gray-400 disabled:cursor-not-allowed transition-all duration-200 font-semibold shadow-md hover:shadow-lg"
-        title="Export as .txt"
+        title={t.results.exportTxt}
       >
         <i className="fas fa-file-alt mr-2"></i>
-        .TXT
+        {t.results.exportTxt}
       </button>
       <button
         onClick={handleExportCsv}
         disabled={isDisabled}
         className="px-6 py-3 bg-brand-blue text-white rounded-lg hover:bg-brand-darkBlue disabled:bg-gray-400 disabled:text-gray-200 dark:disabled:bg-gray-600 dark:disabled:text-gray-400 disabled:cursor-not-allowed transition-all duration-200 font-semibold shadow-md hover:shadow-lg"
-        title="Export as .csv"
+        title={t.results.exportCsv}
       >
         <i className="fas fa-file-csv mr-2"></i>
-        .CSV
+        {t.results.exportCsv}
       </button>
     </div>
   );

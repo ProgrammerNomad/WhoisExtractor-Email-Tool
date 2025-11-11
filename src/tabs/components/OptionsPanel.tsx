@@ -1,4 +1,5 @@
 import React from "react";
+import { useLanguage } from "../hooks/useLanguage";
 
 export interface ExtractionOptions {
   sort: boolean;
@@ -41,9 +42,20 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
   isExtracting,
   totalCount,
 }) => {
+  const { t } = useLanguage();
   const [keywordText, setKeywordText] = React.useState(DEFAULT_KEYWORDS);
   const [filterStringsText, setFilterStringsText] = React.useState("");
   const sortThreshold = 50000;
+
+  const SEPARATOR_OPTIONS_I18N = [
+    { value: "\n", label: t.options.outputOptions.separators.newline },
+    { value: ", ", label: t.options.outputOptions.separators.comma },
+    { value: "; ", label: t.options.outputOptions.separators.semicolon },
+    { value: " | ", label: t.options.outputOptions.separators.pipe },
+    { value: " : ", label: "Colon" },
+    { value: "\t", label: "Tab" },
+    { value: "custom", label: "Custom" },
+  ];
 
   const handleKeywordsChange = (text: string) => {
     setKeywordText(text);
@@ -82,11 +94,11 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
         {/* Extraction Type */}
         <div className="bg-white shadow-md rounded-xl p-6 border border-border-gray">
           <h3 className="text-lg font-bold text-text-dark mb-4">
-            Extraction Type
+            {t.options.extractionType.label}
           </h3>
         <div>
           <label className="block text-sm font-medium text-text-dark mb-2">
-            Extract
+            {t.options.extractionType.label}
           </label>
           <select
             value={options.extractionType}
@@ -99,7 +111,7 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
             disabled={isExtracting}
             className="w-full px-4 py-3 border-2 border-border-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-brand-blue text-text-dark font-medium"
           >
-            <option value="email">Email Addresses</option>
+            <option value="email">{t.options.extractionType.email}</option>
             <option value="url">Web URLs</option>
           </select>
         </div>
@@ -108,13 +120,13 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
       {/* Basic Options */}
       <div className="bg-white shadow-md rounded-xl p-6 border border-border-gray space-y-4">
         <h3 className="text-lg font-bold text-text-dark mb-2">
-          Basic Options
+          {t.options.basicOptions.label}
         </h3>
 
         {/* Deduplication Toggle */}
         <div className="flex items-center justify-between py-2 border-b border-gray-100">
           <label className="text-sm font-medium text-text-dark cursor-pointer">
-            Remove Duplicates
+            {t.options.basicOptions.deduplicate}
           </label>
           <div onClick={() => !isExtracting && setOptions({ ...options, dedupe: !options.dedupe })}>
             <ToggleSwitch enabled={options.dedupe} disabled={isExtracting} />
@@ -124,7 +136,7 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
         {/* Sort Toggle */}
         <div className="flex items-center justify-between py-2 border-b border-gray-100">
           <label className="text-sm font-medium text-text-dark cursor-pointer">
-            Sort Alphabetically
+            {t.options.basicOptions.sort}
           </label>
           <div onClick={() => !isExtracting && setOptions({ ...options, sort: !options.sort })}>
             <ToggleSwitch enabled={options.sort} disabled={isExtracting} />
@@ -139,7 +151,7 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
         {/* Lowercase Toggle */}
         <div className="flex items-center justify-between py-2 border-b border-gray-100">
           <label className="text-sm font-medium text-text-dark cursor-pointer">
-            Convert to Lowercase
+            {t.options.basicOptions.lowercase}
           </label>
           <div onClick={() => !isExtracting && setOptions({ ...options, lowercase: !options.lowercase })}>
             <ToggleSwitch enabled={options.lowercase} disabled={isExtracting} />
@@ -149,7 +161,7 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
         {/* Remove Numeric Emails Toggle */}
         <div className="flex items-center justify-between py-2">
           <label className="text-sm font-medium text-text-dark cursor-pointer">
-            Remove Numeric Domains
+            {t.options.basicOptions.removeNumeric}
           </label>
           <div onClick={() => !isExtracting && setOptions({ ...options, removeNumeric: !options.removeNumeric })}>
             <ToggleSwitch enabled={options.removeNumeric} disabled={isExtracting} />
@@ -160,16 +172,16 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
       {/* Output Formatting */}
       <div className="bg-brand-lightBlue shadow-md rounded-xl p-6 border border-brand-blue border-opacity-20">
         <h3 className="text-lg font-bold text-brand-blue mb-4">
-          Output Options
+          {t.options.outputOptions.label}
         </h3>
 
         {/* Separator Selection */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-text-dark mb-2">
-            Separator
+            {t.options.outputOptions.separator}
           </label>
           <select
-            value={options.separator === "custom" || !SEPARATOR_OPTIONS.find(opt => opt.value === options.separator) ? "custom" : options.separator}
+            value={options.separator === "custom" || !SEPARATOR_OPTIONS_I18N.find(opt => opt.value === options.separator) ? "custom" : options.separator}
             onChange={(e) => {
               const value = e.target.value;
               if (value !== "custom") {
@@ -181,7 +193,7 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
             disabled={isExtracting}
             className="w-full px-4 py-3 border-2 border-border-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-brand-blue text-text-dark font-medium bg-white"
           >
-            {SEPARATOR_OPTIONS.map((opt, idx) => (
+            {SEPARATOR_OPTIONS_I18N.map((opt, idx) => (
               <option key={idx} value={opt.value}>
                 {opt.label}
               </option>
@@ -190,7 +202,7 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
         </div>
 
         {/* Custom Separator Input */}
-        {(options.separator === "custom" || !SEPARATOR_OPTIONS.find(opt => opt.value === options.separator)) && (
+        {(options.separator === "custom" || !SEPARATOR_OPTIONS_I18N.find(opt => opt.value === options.separator)) && (
           <div className="mb-4">
             <label className="block text-sm font-medium text-text-dark mb-2">
               Custom Separator
@@ -211,7 +223,7 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
         {/* Group By Selection */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-text-dark mb-2">
-            Group emails
+            {t.options.outputOptions.groupByLabel}
           </label>
           <select
             value={options.groupBy}
@@ -265,13 +277,13 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
         {/* Advanced Filters */}
         <div className="bg-green-50 shadow-md rounded-xl p-6 border border-green-200">
         <h3 className="text-lg font-bold text-green-800 mb-4">
-          Advanced Filter Options
+          {t.options.advancedFilters.label}
         </h3>
 
         {/* Filter Type */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-text-dark mb-2">
-            Filter Mode
+            {t.options.advancedFilters.filterMode}
           </label>
           <select
             value={options.filterType}
@@ -297,18 +309,18 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
         {/* String Filter */}
         <div>
           <label className="block text-sm font-medium text-text-dark mb-2">
-            Filter Strings (one per line)
+            {t.options.advancedFilters.removeStrings}
           </label>
           <textarea
             value={filterStringsText}
             onChange={(e) => handleFilterStringsChange(e.target.value)}
-            placeholder={"gmail.com\ncompany.com\n@specific-domain.com"}
+            placeholder={t.options.advancedFilters.removeStringsPlaceholder}
             rows={4}
             disabled={isExtracting}
             className="w-full px-4 py-3 border-2 border-border-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 text-text-dark font-mono text-sm bg-white"
           />
           <p className="text-xs text-text-muted mt-2">
-            Case insensitive partial matching
+            {t.options.advancedFilters.removeStringsHelp}
           </p>
         </div>
       </div>
@@ -320,10 +332,10 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-bold text-text-dark">
-                  Advanced Keyword Filter
+                  {t.options.keywordFilter.label}
                 </h3>
                 <p className="text-sm text-text-muted mt-1">
-                  Remove unwanted emails containing specific keywords or patterns
+                  {t.options.keywordFilter.description}
                 </p>
               </div>
               <div onClick={() => !isExtracting && setOptions({ ...options, keywordsEnabled: !options.keywordsEnabled })}>
@@ -335,12 +347,12 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
 
         <div>
           <label className="block text-sm font-medium text-text-dark mb-2">
-            Remove emails containing these keywords (comma-separated)
+            {t.options.keywordFilter.inputLabel}
           </label>
           <textarea
             value={keywordText}
             onChange={(e) => handleKeywordsChange(e.target.value)}
-            placeholder="whois,proxy,dns,spam..."
+            placeholder={t.options.keywordFilter.placeholder}
             rows={3}
             disabled={isExtracting || !options.keywordsEnabled}
             className="w-full px-4 py-3 border-2 border-border-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-brand-blue text-text-dark font-mono text-sm disabled:opacity-50 disabled:cursor-not-allowed"
@@ -348,8 +360,8 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
           <div className="flex items-center justify-between mt-2">
             <p className="text-xs text-text-muted">
               {options.keywordsEnabled 
-                ? "Separate keywords with commas for automatic filtering"
-                : "Enable the filter to use keyword filtering"
+                ? t.options.keywordFilter.helpEnabled
+                : t.options.keywordFilter.helpDisabled
               }
             </p>
             <a
@@ -358,7 +370,7 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
               rel="noopener noreferrer"
               className="text-xs text-brand-blue hover:text-brand-darkBlue hover:underline font-medium"
             >
-              Request new keywords →
+              {t.options.keywordFilter.requestLink}
             </a>
           </div>
         </div>

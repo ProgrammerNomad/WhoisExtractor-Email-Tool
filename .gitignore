@@ -120,3 +120,5 @@ bower_components
 !.yarn/sdks
 !.yarn/versions
 .github/copilot-instructions.md
+TRANSLATION_GUIDE.md
+TRANSLATION_TODO.md
