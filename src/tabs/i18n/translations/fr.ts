@@ -1,39 +1,39 @@
-import type { Translation } from "./en";
+import type { Translation } from "./en"
 
 /**
  * French Translations
- * Traductions Françaises
+ * Traductions françaises (corrigées et harmonisées)
  */
 
 export const fr: Translation = {
   // Header
   header: {
-    title: "Email Address Extractor",
-    subtitle: "Récupérez vos emails depuis tout texte ou fichier grâce à des filtres avancés simples",
-    emailCount: "{{count}} Emails",
+    title: "Extracteur d'adresses e-mail",
+    subtitle: "Extrayez des adresses e-mail à partir de n'importe quel texte ou fichier grâce à des filtres avancés et faciles à utiliser",
+    emailCount: "{{count}} e-mails",
   },
 
   // Input Section
   input: {
-    title: "Texte d'Entrée",
-    placeholder: "Collez votre texte contenant des adresses email ici...",
-    fileUpload: "Ou Télécharger un Fichier",
+    title: "Texte d’entrée",
+    placeholder: "Collez ici votre texte contenant des adresses e-mail...",
+    fileUpload: "Ou importer un fichier",
     chooseFile: "Choisir un fichier",
     selectedFile: "Fichier sélectionné :",
     size: "Taille :",
-    largeFileWarning: "⚠ Fichier volumineux - traitement en arrière-plan",
-    extractButton: "Extraire les Emails",
+    largeFileWarning: "⚠ Fichier volumineux — traitement en arrière-plan",
+    extractButton: "Extraire les e-mails",
     resetButton: "Réinitialiser",
     extracting: "Extraction en cours...",
   },
 
   // Results Section
   results: {
-    title: "Emails Extraits",
-    count: "{{count}} adresses email trouvées",
-    noResults: "Aucune adresse email trouvée. Essayez de coller du texte ou de télécharger un fichier.",
-    placeholder: "Les adresses email extraites apparaîtront ici...",
-    copyButton: "Tout Copier",
+    title: "Adresses e-mail extraites",
+    count: "{{count}} adresses e-mail trouvées",
+    noResults: "Aucune adresse e-mail trouvée. Essayez de coller du texte ou d’importer un fichier.",
+    placeholder: "Les adresses e-mail extraites apparaîtront ici...",
+    copyButton: "Tout copier",
     exportTxt: "Exporter .TXT",
     exportCsv: "Exporter .CSV",
     copied: "Copié dans le presse-papiers !",
@@ -42,102 +42,103 @@ export const fr: Translation = {
 
   // Options Panel
   options: {
-    title: "Options d'Extraction",
-    
+    title: "Options d’extraction",
+
     extractionType: {
-      label: "Type d'Extraction",
-      email: "Adresses Email",
+      label: "Type d’extraction",
+      email: "Adresses e-mail",
     },
 
     basicOptions: {
-      label: "Options de Base",
-      deduplicate: "Supprimer les Doublons",
-      deduplicateHelp: "Supprimer les adresses email en double",
-      lowercase: "Convertir en Minuscules",
-      lowercaseHelp: "Convertir tous les emails en minuscules",
-      removeNumeric: "Supprimer les Domaines Numériques",
-      removeNumericHelp: "Supprimer les emails avec des domaines uniquement numériques",
-      sort: "Trier par Ordre Alphabétique",
+      label: "Options de base",
+      deduplicate: "Supprimer les doublons",
+      deduplicateHelp: "Supprimer les adresses e-mail en double",
+      lowercase: "Convertir en minuscules",
+      lowercaseHelp: "Convertir toutes les adresses e-mail en minuscules",
+      removeNumeric: "Supprimer les domaines numériques",
+      removeNumericHelp: "Supprimer les adresses e-mail dont le domaine est uniquement numérique",
+      sort: "Trier par ordre alphabétique",
       sortHelp: "Trier les résultats par ordre alphabétique",
     },
 
     outputOptions: {
-      label: "Options de Sortie",
+      label: "Options de sortie",
       separator: "Séparateur",
-      groupByLabel: "Regrouper les emails",
+      groupByLabel: "Regrouper les e-mails",
       separators: {
-        newline: "Nouvelle Ligne",
+        newline: "Nouvelle ligne",
         comma: "Virgule",
         semicolon: "Point-virgule",
-        pipe: "Barre (|)",
+        pipe: "Barre verticale (|)",
         space: "Espace",
       },
     },
 
     advancedFilters: {
-      label: "Options de Filtrage Avancées",
-      filterMode: "Mode de Filtrage",
-      removeStrings: "Supprimer les Chaînes",
+      label: "Filtres avancés",
+      filterMode: "Mode de filtrage",
+      removeStrings: "Supprimer des chaînes",
       removeStringsPlaceholder: "Entrez les chaînes à supprimer (une par ligne)",
-      removeStringsHelp: "Supprimer les emails contenant ces chaînes",
+      removeStringsHelp: "Supprime les adresses e-mail contenant ces chaînes",
     },
 
     keywordFilter: {
-      label: "Filtre de Mots-clés Avancé",
-      enable: "Activer le Filtre de Mots-clés",
+      label: "Filtre de mots-clés avancé",
+      enable: "Activer le filtre de mots-clés",
       placeholder: "Entrez les mots-clés (un par ligne)",
-      description: "Supprimer les emails indésirables contenant des mots-clés ou motifs spécifiques",
-      inputLabel: "Supprimer les emails contenant ces mots-clés (séparés par des virgules)",
+      description: "Supprime les adresses e-mail indésirables contenant des mots-clés ou motifs spécifiques",
+      inputLabel: "Supprimer les adresses e-mail contenant ces mots-clés (séparés par des virgules)",
       requestLink: "Demander de nouveaux mots-clés →",
-      helpEnabled: "Seuls les emails contenant ces mots-clés seront extraits",
-      helpDisabled: "Activer pour filtrer les emails par mots-clés",
+      helpEnabled: "Seules les adresses e-mail contenant ces mots-clés seront extraites",
+      helpDisabled: "Activez cette option pour filtrer les e-mails par mots-clés",
     },
   },
 
   // Footer
   footer: {
     about: {
-      title: "À Propos",
-      description: "Un outil gratuit et open source d'extraction d'emails qui traite les données localement dans votre navigateur. Aucune donnée n'est téléchargée vers un serveur.",
-      opensource: "Gratuit et Open Source | Licence MIT",
-      message: "N'hésitez pas à utiliser, modifier et distribuer cet outil à toutes fins !",
+      title: "À propos",
+      description:
+        "Un outil gratuit et open source d’extraction d’adresses e-mail qui traite vos données localement dans votre navigateur. Aucune donnée n’est envoyée à un serveur.",
+      opensource: "Gratuit et open source | Sous licence MIT",
+      message: "Vous êtes libre d’utiliser, de modifier et de distribuer cet outil à toute fin !",
     },
     quickLinks: {
-      title: "Liens Rapides",
+      title: "Liens rapides",
       github: "Dépôt GitHub",
-      issues: "Signaler des Problèmes",
-      privacy: "Politique de Confidentialité",
+      issues: "Signaler un problème",
+      privacy: "Politique de confidentialité",
       website: "WhoisExtractor",
     },
     support: {
       title: "Soutien",
-      description: "Si vous trouvez cet outil utile, veuillez considérer :",
-      star: "Étoile sur GitHub",
-      fork: "Bifurquer le Projet",
+      description: "Si vous trouvez cet outil utile, vous pouvez :",
+      star: "Ajouter une étoile sur GitHub",
+      fork: "Dupliquer le projet",
       contribute: "Contribuer",
     },
   },
 
   // Privacy Notice
   privacy: {
-    title: "Avis de Confidentialité",
+    title: "Avis de confidentialité",
     message:
-      "Toute l'extraction d'email est traitée localement dans votre navigateur et n'est PAS téléchargée vers un serveur.\n\n" +
-      "Vos données restent complètement privées et sécurisées sur votre appareil.\n\n" +
-      "Vous pouvez opter pour le traitement sur serveur dans les Paramètres si nécessaire (fonctionnalité pas encore disponible).",
-    understood: "J'ai Compris",
+      "Toutes les opérations d’extraction d’e-mails sont effectuées localement dans votre navigateur et ne sont PAS envoyées vers un serveur.\n\n" +
+      "Vos données restent entièrement privées et sécurisées sur votre appareil.\n\n" +
+      "Vous pourrez activer le traitement sur serveur dans les paramètres si nécessaire (fonctionnalité à venir).",
+    understood: "J’ai compris",
   },
 
   // Toast Messages
   toast: {
     extractionStarted: "Extraction démarrée...",
-    extractionComplete: "Extraction terminée ! {{count}} emails trouvés",
-    copied: "{{count}} emails copiés dans le presse-papiers",
-    exportSuccess: "{{count}} emails exportés vers {{format}}",
-    fileUploaded: "Fichier téléchargé : {{filename}}",
+    extractionComplete: "Extraction terminée ! {{count}} e-mails trouvés",
+    copied: "{{count}} e-mails copiés dans le presse-papiers",
+    exportSuccess: "{{count}} e-mails exportés vers {{format}}",
+    fileUploaded: "Fichier importé : {{filename}}",
     settingsSaved: "Paramètres enregistrés avec succès",
     error: "Erreur : {{message}}",
-    cleared: "Toutes les données effacées",
+    cleared: "Toutes les données ont été effacées",
   },
 
   // Common
@@ -154,4 +155,4 @@ export const fr: Translation = {
     help: "Aide",
     language: "Langue",
   },
-};
+}

@@ -154,5 +154,3 @@ export const hi: Translation = {
     language: "भाषा",
   },
 };
-
-export type Translation = typeof en;
