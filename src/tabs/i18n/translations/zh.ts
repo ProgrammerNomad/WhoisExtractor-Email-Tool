@@ -8,7 +8,7 @@ import type { Translation } from "./en";
 export const zh: Translation = {
   // Header
   header: {
-    title: "Email Address Extractor",
+    title: "邮箱地址提取工具",
     subtitle: "从任意文本或文件快速提取邮箱地址，配合好用的高级过滤",
     emailCount: "{{count}} 个邮箱",
   },

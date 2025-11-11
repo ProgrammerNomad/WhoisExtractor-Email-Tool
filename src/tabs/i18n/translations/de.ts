@@ -8,8 +8,8 @@ import type { Translation } from "./en";
 export const de: Translation = {
   // Header
   header: {
-    title: "Email Address Extractor",
-  subtitle: "Ziehe E-Mail-Adressen aus jedem Text oder Dateiinhalt, mit leicht einstellbaren Pro-Filtern",
+    title: "E-Mail-Adressen Extraktor",
+    subtitle: "Ziehe E-Mail-Adressen aus jedem Text oder Dateiinhalt, mit leicht einstellbaren Pro-Filtern",
     emailCount: "{{count}} E-Mails",
   },
 

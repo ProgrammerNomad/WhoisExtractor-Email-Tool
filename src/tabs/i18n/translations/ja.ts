@@ -8,7 +8,7 @@ import type { Translation } from "./en";
 export const ja: Translation = {
   // Header
   header: {
-    title: "Email Address Extractor",
+    title: "メールアドレス抽出ツール",
     subtitle: "テキストやファイルからメールアドレスを素早く抽出。使いやすいアドバンスフィルター付き",
     emailCount: "{{count}} メール",
   },
