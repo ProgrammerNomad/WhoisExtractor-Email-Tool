@@ -7,11 +7,11 @@
 WhoisExtractor is a browser extension that extracts email addresses from text and files. **Everything happens on your computer** - nothing is sent to the internet.
 
 **In Plain English:**
-- ✅ Your files and text stay on your computer
-- ✅ We don't collect any of your data
-- ✅ We don't track what you do
-- ✅ We don't see what emails you extract
-- ✅ No sign-up or account needed
+- Your files and text stay on your computer
+- We don't collect any of your data
+- We don't track what you do
+- We don't see what emails you extract
+- No sign-up or account needed
 
 ---
 
@@ -48,11 +48,11 @@ For files larger than 256 KB (about 50 pages of text), we use a browser feature 
 
 ### What We DO NOT Store
 
-- ❌ Email addresses you extract
-- ❌ Files or text you upload
-- ❌ Your name or email address
-- ❌ Your browsing history
-- ❌ Anything about you or your usage
+- Email addresses you extract
+- Files or text you upload
+- Your name or email address
+- Your browsing history
+- Anything about you or your usage
 
 ---
 
@@ -90,10 +90,10 @@ This extension does not collect any information from anyone, including children 
 
 **How we keep things secure:**
 
-- ✅ No internet connection = no data breaches
-- ✅ No servers = nothing to hack
-- ✅ Chrome's built-in security protects your settings
-- ✅ Open source code = anyone can verify our claims
+- No internet connection = no data breaches
+- No servers = nothing to hack
+- Chrome's built-in security protects your settings
+- Open source code = anyone can verify our claims
 
 **What you should know:**
 - Your extracted emails are shown on screen but **not saved**
@@ -133,15 +133,15 @@ We may update this policy if:
 
 This extension complies with privacy laws worldwide:
 
-- 🇪🇺 **GDPR** (Europe) - No personal data processed
-- 🇺🇸 **CCPA** (California) - No data sold or shared
-- 🇬🇧 **UK GDPR** - Same as EU GDPR
-- 🇨🇦 **PIPEDA** (Canada) - No data collection
-- 🇦🇺 **Privacy Act** (Australia) - Local processing only
-- 🇧🇷 **LGPD** (Brazil) - No personal data
-- 🇮🇳 **IT Act** (India) - Compliant with data protection rules
-- 🇯🇵 **APPI** (Japan) - No cross-border data transfer
-- 🇨🇳 **PIPL** (China) - Local processing only
+- **GDPR** (Europe) - No personal data processed
+- **CCPA** (California) - No data sold or shared
+- **UK GDPR** - Same as EU GDPR
+- **PIPEDA** (Canada) - No data collection
+- **Privacy Act** (Australia) - Local processing only
+- **LGPD** (Brazil) - No personal data
+- **IT Act** (India) - Compliant with data protection rules
+- **APPI** (Japan) - No cross-border data transfer
+- **PIPL** (China) - Local processing only
 
 **Common to all:** We don't collect, store, or transfer any personal data.
 
@@ -151,9 +151,9 @@ This extension complies with privacy laws worldwide:
 
 **Questions about privacy?**
 
-- 📧 Email: shiv@srapsware.com
-- 🐛 GitHub Issues: [https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool/issues](https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool/issues)
-- 📖 Open Source Code: [https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool](https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool)
+- Email: shiv@srapsware.com
+- GitHub Issues: [https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool/issues](https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool/issues)
+- Open Source Code: [https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool](https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool)
 
 **Want to verify our claims?**  
 The code is open source - you or any developer can review it to confirm we're telling the truth.

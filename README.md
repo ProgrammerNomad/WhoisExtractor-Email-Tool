@@ -93,7 +93,7 @@ npm run build
 npm run package
 ```
 
-## 📖 Usage
+## Usage
 
 ### Basic Extraction
 
@@ -197,17 +197,17 @@ The extension uses a **hybrid approach** that automatically selects the best pro
 
 | Component | Role | Status |
 |-----------|------|--------|
-| **Tool Page UI** | Full-page interface for input, options, results display | ✅ Active |
-| **Extension Icon** | Opens/focuses tool page tab (Ctrl+Shift+E shortcut) | ✅ Active |
-| **Language Switcher** | Instant language switching (10 languages) | ✅ Active |
-| **Theme Switcher** | Dark/light mode toggle with persistence | ✅ Active |
-| **Review System** | Smart review prompts based on usage | ✅ Active |
-| **Update Notifications** | Auto-detection of Chrome Web Store updates | ✅ Active |
-| **File Reader** | Progress-tracked file loading (no UI freeze) | ✅ Active |
-| **Background Service Worker** | Opens/focuses tabs, manages offscreen page, forwards messages | ✅ Active |
-| **Offscreen Page** | Hosts Web Worker, relays messages to background | ✅ Active (2-300 MB files) |
-| **Web Worker** | Heavy parsing with chunking, batching, deduplication | ✅ Active (2-300 MB files) |
-| **Client-Side Extraction** | Fast regex-based extraction for small inputs | ✅ Active (< 2 MB files) |
+| **Tool Page UI** | Full-page interface for input, options, results display | Active |
+| **Extension Icon** | Opens/focuses tool page tab (Ctrl+Shift+E shortcut) | Active |
+| **Language Switcher** | Instant language switching (10 languages) | Active |
+| **Theme Switcher** | Dark/light mode toggle with persistence | Active |
+| **Review System** | Smart review prompts based on usage | Active |
+| **Update Notifications** | Auto-detection of Chrome Web Store updates | Active |
+| **File Reader** | Progress-tracked file loading (no UI freeze) | Active |
+| **Background Service Worker** | Opens/focuses tabs, manages offscreen page, forwards messages | Active |
+| **Offscreen Page** | Hosts Web Worker, relays messages to background | Active (2-300 MB files) |
+| **Web Worker** | Heavy parsing with chunking, batching, deduplication | Active (2-300 MB files) |
+| **Client-Side Extraction** | Fast regex-based extraction for small inputs | Active (< 2 MB files) |
 
 ### Processing Flow (Large Files)
 
@@ -276,11 +276,11 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## Feedback & Support
 
-- 📧 Contact: shiv@srapsware.com
-- 🐛 Bug Reports: [Open an issue](https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool/issues)
-- 💡 Feature Requests: [Open an issue](https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool/issues)
-- ⭐ Review: [Leave a review on Chrome Web Store](https://chromewebstore.google.com/detail/whoisextractor-email-tool/hlkfbiaphhmngdlcfgfagfjicbadomnj/reviews)
-- 💬 Discussions: [GitHub Discussions](https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool/discussions)
+- Contact: shiv@srapsware.com
+- Bug Reports: [Open an issue](https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool/issues)
+- Feature Requests: [Open an issue](https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool/issues)
+- Review: [Leave a review on Chrome Web Store](https://chromewebstore.google.com/detail/whoisextractor-email-tool/hlkfbiaphhmngdlcfgfagfjicbadomnj/reviews)
+- Discussions: [GitHub Discussions](https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool/discussions)
 
 ---
 
