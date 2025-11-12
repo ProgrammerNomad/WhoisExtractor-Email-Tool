@@ -8,6 +8,8 @@ export const en = {
     title: "Email Address Extractor",
     subtitle: "Extract email addresses from any raw text data with advanced filtering options",
     emailCount: "{{count}} Emails",
+    totalExtracted: "Total Extracted",
+    current: "Current",
   },
 
   // Input Section
@@ -141,6 +143,7 @@ export const en = {
   review: {
     title: "Enjoying WhoisExtractor?",
     message: "You've been using WhoisExtractor for {{days}} days with {{count}} successful extractions. Would you mind leaving a review?",
+    totalExtracted: "You've extracted {{total}} emails so far!",
     rateNow: "Rate on Chrome Web Store",
     later: "Maybe Later",
     dontAsk: "Don't Ask Again",

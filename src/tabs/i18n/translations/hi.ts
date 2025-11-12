@@ -10,6 +10,8 @@ export const hi: Translation = {
     title: "ईमेल पता एक्सट्रैक्टर",
     subtitle: "किसी भी टेक्स्ट या फ़ाइल से ईमेल पते निकालें — उन्नत फ़िल्टर विकल्पों के साथ",
     emailCount: "{{count}} ईमेल",
+    totalExtracted: "कुल निकाले गए",
+    current: "वर्तमान",
   },
 
   // Input Section
@@ -143,6 +145,7 @@ export const hi: Translation = {
   review: {
     title: "WhoisExtractor का आनंद ले रहे हैं?",
     message: "आप {{days}} दिनों से WhoisExtractor का उपयोग कर रहे हैं और {{count}} सफल निष्कर्षण किए हैं। क्या आप समीक्षा देना चाहेंगे?",
+    totalExtracted: "आपने अब तक {{total}} ईमेल निकाले हैं!",
     rateNow: "Chrome Web Store पर रेटिंग दें",
     later: "शायद बाद में",
     dontAsk: "दोबारा न पूछें",

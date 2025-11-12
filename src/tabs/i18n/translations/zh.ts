@@ -11,6 +11,8 @@ export const zh: Translation = {
     title: "邮箱地址提取器",
     subtitle: "从任意文本或文件中快速提取邮箱地址，支持强大且易用的高级过滤功能",
     emailCount: "{{count}} 个邮箱",
+    totalExtracted: "总共提取",
+    current: "当前",
   },
 
   // Input Section
@@ -144,6 +146,7 @@ export const zh: Translation = {
   review: {
     title: "喜欢 WhoisExtractor 吗？",
     message: "您已使用 WhoisExtractor {{days}} 天，成功提取了 {{count}} 次。您愿意留下评价吗？",
+    totalExtracted: "您已经提取了 {{total}} 个邮箱！",
     rateNow: "在 Chrome 网上应用店评分",
     later: "稍后再说",
     dontAsk: "不再询问",

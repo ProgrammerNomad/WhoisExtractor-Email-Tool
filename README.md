@@ -14,16 +14,34 @@ If you find this useful, please [leave a review](https://chromewebstore.google.c
 
 ## Features
 
+### Core Functionality
 - **100% Local Processing** - Your data never leaves your device
-- **Fast & Non-Blocking** - Web Worker-based extraction prevents UI freezing
+- **Fast Client-Side Extraction** - Instant regex-based email extraction
 - **Smart Deduplication** - Case-insensitive, automatic duplicate removal
-- **Keyword Filtering** - Filter results by specific keywords
+- **Keyword Filtering** - 83 pre-configured keywords to filter out generic/privacy emails
 - **Multiple Input Methods** - Paste text or upload files (.txt, .csv, etc.)
 - **Flexible Export** - Copy to clipboard or export as .txt/.csv
-- **Modern UI** - Clean, intuitive interface with real-time progress
-- **Configurable** - Adjust chunk sizes, batch sizes, and sorting thresholds
+- **Real-Time Progress** - Live count and streaming results display
+- **Full-Page Experience** - Opens in a new tab, not a cramped popup
+
+### Advanced Features
+- **Multi-Language Support** - 10 languages with instant switching:
+  - English, Spanish, French, German, Portuguese
+  - Russian, Arabic, Hindi, Japanese, Chinese
+- **RTL Support** - Full right-to-left language support (Arabic, Hebrew)
+- **Dark/Light Mode** - Theme toggle with automatic persistence
+- **Smart Review System** - Intelligent review prompts based on usage patterns
+- **Update Notifications** - Automatic Chrome Web Store update detection
+- **Grand Total Tracking** - Lifetime email extraction counter across all sessions
+- **Keyboard Shortcut** - Quick access via Ctrl+Shift+E
+- **Configurable** - Adjust sorting thresholds and filtering options
+
+### Privacy & Performance
+- **No Data Upload** - All processing happens in your browser
+- **No Tracking** - Zero analytics or external calls
+- **No CDNs** - All assets bundled locally
+- **Memory Safe** - Smart thresholds prevent browser freezing
 - **Accessible** - Full keyboard navigation and screen reader support
-- **Multi-Language Support** - Available in 10 languages (EN, ES, FR, DE, PT, RU, AR, HI, JA, ZH)
 
 ## Quick Start
 
@@ -69,7 +87,7 @@ npm run package
 
 ### Basic Extraction
 
-1. Click the extension icon to open the popup
+1. Click the extension icon to open the tool page in a new tab (or use keyboard shortcut **Ctrl+Shift+E**)
 2. Choose input method:
    - **Paste Text**: Copy and paste text containing emails
    - **Upload File**: Upload a .txt, .csv, or other text file
@@ -77,51 +95,92 @@ npm run package
    - Sort alphabetically
    - Remove duplicates (default: ON)
    - Choose output separator
-   - Add keyword filters
+   - Add keyword filters (83 pre-configured keywords available)
 4. Click "Extract Emails"
-5. View results in real-time
+5. View results in real-time with streaming updates
 6. Export via Copy, .txt, or .csv
 
 ### Advanced Options
 
+- **Keyword Filtering**: 83 pre-configured keywords to filter out generic/privacy-protected emails
 - **Grouping**: Group results by domain
-- **Keywords**: Filter emails containing specific keywords
 - **Sorting**: Auto-sort with smart threshold (default: 50,000 emails)
 - **Memory Safety**: Auto-pause if memory threshold exceeded
+- **Multi-Language**: Switch between 10 languages instantly
+- **Dark Mode**: Toggle dark/light theme with persistence
 
 ## Architecture
 
+**Note**: Current implementation uses **client-side extraction** directly in the tool page. The full Web Worker architecture described below is available in the codebase but currently disabled for simplicity.
+
+### Current Architecture (Simplified)
+
 ```
-┌─────────────┐     (Port)     ┌──────────────────┐
-│  Popup UI   │◄───────────────►│ Background Worker│
-│(popup/tsx)  │                 │  (service worker)│
-└─────────────┘                 └──────────────────┘
-                                        │
-                                        │
-                                (orchestration)
-                                        │
-                                        ▼
-                                ┌──────────────────┐
-                                │  Offscreen Page  │
-                                │  (offscreen/)    │
-                                └──────────────────┘
-                                        │
-                                        │
-                                  (spawns worker)
-                                        │
-                                        ▼
-                                ┌──────────────────┐
-                                │  Web Worker      │
-                                │ (parser.worker)  │
-                                └──────────────────┘
+┌──────────────────┐     (click icon)     ┌──────────────────┐
+│  Extension Icon  │────────────────────►│   Tool Page      │
+│                  │  Opens new tab       │   (tabs/tsx)     │
+└──────────────────┘                      └──────────────────┘
+                                                  │
+                                                  │
+                                          (client-side)
+                                          extraction with
+                                          regex matching
+                                                  │
+                                                  ▼
+                                          ┌──────────────────┐
+                                          │  Results Display │
+                                          │  (streaming UI)  │
+                                          └──────────────────┘
+```
+
+### Planned Architecture (Full Worker Implementation)
+
+```
+┌──────────────────┐     (click icon)     ┌──────────────────┐
+│  Extension Icon  │────────────────────►│   Tool Page      │
+│                  │  Opens new tab       │   (tabs/tsx)     │
+└──────────────────┘                      └──────────────────┘
+                                                  │
+                                                  │
+                                            (Port messages)
+                                                  │
+                                                  ▼
+                                          ┌──────────────────┐
+                                          │ Background Worker│
+                                          │  (service worker)│
+                                          └──────────────────┘
+                                                  │
+                                                  │
+                                          (orchestration)
+                                                  │
+                                                  ▼
+                                          ┌──────────────────┐
+                                          │  Offscreen Page  │
+                                          │  (offscreen/)    │
+                                          └──────────────────┘
+                                                  │
+                                                  │
+                                            (spawns worker)
+                                                  │
+                                                  ▼
+                                          ┌──────────────────┐
+                                          │  Web Worker      │
+                                          │ (parser.worker)  │
+                                          └──────────────────┘
 ```
 
 ### Key Components
 
-- **Popup UI** - User interface for input, options, and results
-- **Background Service Worker** - Message broker and offscreen lifecycle manager
-- **Offscreen Page** - Hosts Web Worker and handles direct extraction for small inputs
-- **Web Worker** - Heavy parsing in background thread with chunking and batching
+- **Tool Page (Full Tab)** - User interface that opens in a new browser tab (not a popup)
+- **Extension Icon** - Opens/focuses tool page tab (keyboard shortcut: Ctrl+Shift+E)
+- **Language Switcher** - Instant language switching with 10 language support
+- **Theme Switcher** - Dark/light mode toggle with persistence
+- **Review System** - Smart review prompts based on usage and extraction count
+- **Update Notifications** - Automatic detection of Chrome Web Store updates
+- **Client-Side Extraction** - Fast regex-based email extraction (current implementation)
+- **Background Service Worker** - Manages update notifications and review tracking (message broker ready for future worker implementation)
+- **Offscreen Page** - Available for hosting Web Worker (future enhancement)
+- **Web Worker** - Heavy parsing with chunking and batching (code ready, currently disabled)
 
 ## Development
 

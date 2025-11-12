@@ -19,6 +19,7 @@ export const ReviewPrompt: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [days, setDays] = useState(0);
   const [extractionCount, setExtractionCount] = useState(0);
+  const [totalEmails, setTotalEmails] = useState(0);
   const { t } = useLanguage();
 
   useEffect(() => {
@@ -32,6 +33,7 @@ export const ReviewPrompt: React.FC = () => {
       const data = await getReviewPromptData();
       setDays(daysSinceInstall);
       setExtractionCount(data.extractionCount);
+      setTotalEmails(data.totalEmailsExtracted);
       setIsVisible(true);
       await markPromptShown();
     }
@@ -82,9 +84,18 @@ export const ReviewPrompt: React.FC = () => {
         </h3>
 
         {/* Message */}
-        <p className="text-center text-gray-600 dark:text-gray-300 mb-6">
+        <p className="text-center text-gray-600 dark:text-gray-300 mb-2">
           {interpolate(t.review.message, { days, count: extractionCount })}
         </p>
+        
+        {/* Total Emails Extracted - Highlight */}
+        {totalEmails > 0 && (
+          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 mb-6">
+            <p className="text-center text-sm text-gray-700 dark:text-gray-300">
+              {interpolate(t.review.totalExtracted || "You've extracted <strong>{{total}}</strong> emails so far!", { total: totalEmails.toLocaleString() })}
+            </p>
+          </div>
+        )}
 
         {/* Buttons */}
         <div className="space-y-3">

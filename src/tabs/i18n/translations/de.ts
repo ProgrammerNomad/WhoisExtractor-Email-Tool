@@ -11,6 +11,8 @@ export const de: Translation = {
     title: "Email Address Extractor",
   subtitle: "Ziehe E-Mail-Adressen aus jedem Text oder Dateiinhalt, mit leicht einstellbaren Pro-Filtern",
     emailCount: "{{count}} E-Mails",
+    totalExtracted: "Insgesamt extrahiert",
+    current: "Aktuell",
   },
 
   // Input Section
@@ -144,6 +146,7 @@ export const de: Translation = {
   review: {
     title: "WhoisExtractor gefällt Ihnen?",
     message: "Sie verwenden WhoisExtractor seit {{days}} Tagen mit {{count}} erfolgreichen Extraktionen. Würden Sie eine Bewertung abgeben?",
+    totalExtracted: "Sie haben bisher {{total}} E-Mails extrahiert!",
     rateNow: "Im Chrome Web Store bewerten",
     later: "Vielleicht später",
     dontAsk: "Nicht mehr fragen",

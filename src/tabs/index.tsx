@@ -13,13 +13,14 @@ import { UpdateNotification } from "./components/UpdateNotification";
 import { useExtractor } from "./hooks/useExtractor";
 import { useSettings } from "./hooks/useSettings";
 import { useLanguage, interpolate } from "./hooks/useLanguage";
-import { recordExtraction } from "~utils/reviewPrompt";
+import { recordExtraction, getTotalEmailsExtracted } from "~utils/reviewPrompt";
 import { shouldShowUpdateNotification, getUpdateData } from "~utils/updateNotification";
 
 function TabsIndex() {
   const { t, isLoading: langLoading } = useLanguage();
   const [input, setInput] = useState("");
   const [updateVersion, setUpdateVersion] = useState<string | null>(null);
+  const [grandTotal, setGrandTotal] = useState<number>(0); // Lifetime total across all sessions
   const [options, setOptions] = useState<ExtractionOptions>({
     sort: true,
     dedupe: true,
@@ -48,6 +49,32 @@ function TabsIndex() {
   } = useExtractor();
 
   const { settings, getDefaultOptions, loading: settingsLoading } = useSettings();
+
+  // Load grand total on mount and listen for changes
+  useEffect(() => {
+    const loadGrandTotal = async () => {
+      const total = await getTotalEmailsExtracted();
+      setGrandTotal(total);
+    };
+
+    loadGrandTotal();
+
+    // Listen for storage changes to update grand total in real-time
+    const handleStorageChange = (
+      changes: { [key: string]: chrome.storage.StorageChange },
+      areaName: string
+    ) => {
+      if (areaName === "local" && changes["whois_mail:reviewPrompt"]) {
+        const newData = changes["whois_mail:reviewPrompt"].newValue;
+        if (newData?.totalEmailsExtracted !== undefined) {
+          setGrandTotal(newData.totalEmailsExtracted);
+        }
+      }
+    };
+
+    chrome.storage.onChanged.addListener(handleStorageChange);
+    return () => chrome.storage.onChanged.removeListener(handleStorageChange);
+  }, []);
 
   // Initialize options from settings
   useEffect(() => {
@@ -102,7 +129,12 @@ function TabsIndex() {
     if (input.trim()) {
       await startExtraction(input, options);
       // Record successful extraction for review prompt
-      await recordExtraction();
+      // Wait a bit for extraction to complete, then record the count
+      setTimeout(async () => {
+        if (totalCount > 0) {
+          await recordExtraction(totalCount);
+        }
+      }, 200);
     }
   };
 
@@ -170,14 +202,32 @@ function TabsIndex() {
               </p>
             </div>
             <div className="flex items-center gap-4">
+              {/* Grand Total - Always visible if > 0 */}
+              {grandTotal > 0 && (
+                <div className="bg-white bg-opacity-10 rounded-lg px-4 py-2 border border-white border-opacity-20">
+                  <div className="text-xs text-blue-100 uppercase tracking-wide mb-1">
+                    {t.header.totalExtracted || "Total Extracted"}
+                  </div>
+                  <div className="text-xl font-bold text-white">
+                    {grandTotal.toLocaleString()}
+                  </div>
+                </div>
+              )}
+              
+              {/* Current Extraction Count */}
               {totalCount > 0 && (
                 <div className="bg-white bg-opacity-20 rounded-lg px-4 py-2">
-                  <span className="text-2xl font-bold text-white">
-                    {totalCount.toLocaleString()}
-                  </span>
-                  <span className="text-sm text-blue-100 ml-2">
-                    {interpolate(t.header.emailCount, { count: totalCount })}
-                  </span>
+                  <div className="text-xs text-blue-100 uppercase tracking-wide mb-1">
+                    {t.header.current || "Current"}
+                  </div>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-2xl font-bold text-white">
+                      {totalCount.toLocaleString()}
+                    </span>
+                    <span className="text-sm text-blue-100">
+                      {interpolate(t.header.emailCount, { count: totalCount })}
+                    </span>
+                  </div>
                 </div>
               )}
               <LanguageSwitcher />

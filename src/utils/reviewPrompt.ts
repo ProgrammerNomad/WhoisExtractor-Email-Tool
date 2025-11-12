@@ -6,7 +6,8 @@
 export interface ReviewPromptData {
   installDate: number;
   lastPromptDate: number | null;
-  extractionCount: number;
+  extractionCount: number; // Number of extraction sessions
+  totalEmailsExtracted: number; // Lifetime total of all emails extracted
   hasReviewed: boolean;
   dontAskAgain: boolean;
   promptCount: number;
@@ -35,6 +36,7 @@ export async function getReviewPromptData(): Promise<ReviewPromptData> {
       installDate: Date.now(),
       lastPromptDate: null,
       extractionCount: 0,
+      totalEmailsExtracted: 0,
       hasReviewed: false,
       dontAskAgain: false,
       promptCount: 0,
@@ -59,12 +61,22 @@ export async function updateReviewPromptData(
 
 /**
  * Record a successful extraction
+ * @param emailCount - Number of emails extracted in this session
  */
-export async function recordExtraction(): Promise<void> {
+export async function recordExtraction(emailCount: number = 0): Promise<void> {
   const data = await getReviewPromptData();
   await updateReviewPromptData({
     extractionCount: data.extractionCount + 1,
+    totalEmailsExtracted: data.totalEmailsExtracted + emailCount,
   });
+}
+
+/**
+ * Get total emails extracted across all sessions
+ */
+export async function getTotalEmailsExtracted(): Promise<number> {
+  const data = await getReviewPromptData();
+  return data.totalEmailsExtracted;
 }
 
 /**

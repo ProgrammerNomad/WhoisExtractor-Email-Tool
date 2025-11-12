@@ -11,6 +11,8 @@ export const ja: Translation = {
     title: "Email Address Extractor",
     subtitle: "テキストやファイルからメールアドレスを素早く抽出。使いやすいアドバンスフィルター付き",
     emailCount: "{{count}} メール",
+    totalExtracted: "合計抽出数",
+    current: "現在",
   },
 
   // Input Section
@@ -144,6 +146,7 @@ export const ja: Translation = {
   review: {
     title: "WhoisExtractorをお楽しみいただけていますか？",
     message: "WhoisExtractorを{{days}}日間使用し、{{count}}回の抽出に成功しました。レビューを残していただけますか？",
+    totalExtracted: "これまでに{{total}}件のメールを抽出しました！",
     rateNow: "Chrome ウェブストアで評価する",
     later: "後で",
     dontAsk: "今後表示しない",

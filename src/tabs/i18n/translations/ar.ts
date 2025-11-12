@@ -11,6 +11,8 @@ export const ar: Translation = {
     title: "أداة استخراج عناوين البريد الإلكتروني",
     subtitle: "استخرج عناوين البريد الإلكتروني من أي نص أو ملف بسرعة مع فلاتر متقدمة وسهلة الاستخدام",
     emailCount: "{{count}} بريد إلكتروني",
+    totalExtracted: "إجمالي المستخرج",
+    current: "الحالي",
   },
 
   // Input Section
@@ -144,6 +146,7 @@ export const ar: Translation = {
   review: {
     title: "هل تستمتع باستخدام WhoisExtractor؟",
     message: "لقد كنت تستخدم WhoisExtractor لمدة {{days}} يومًا مع {{count}} عملية استخراج ناجحة. هل تمانع في ترك تقييم؟",
+    totalExtracted: "لقد استخرجت {{total}} بريدًا إلكترونيًا حتى الآن!",
     rateNow: "التقييم على متجر Chrome الإلكتروني",
     later: "ربما لاحقًا",
     dontAsk: "لا تسأل مرة أخرى",
