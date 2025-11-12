@@ -7,13 +7,19 @@ import { ResultsDisplay } from "./components/ResultsDisplay";
 import { ExportButtons } from "./components/ExportButtons";
 import { ThemeSwitcher } from "./components/ThemeSwitcher";
 import { LanguageSwitcher } from "./components/LanguageSwitcher";
+import { ReviewPrompt } from "./components/ReviewPrompt";
+import { ReviewButton } from "./components/ReviewButton";
+import { UpdateNotification } from "./components/UpdateNotification";
 import { useExtractor } from "./hooks/useExtractor";
 import { useSettings } from "./hooks/useSettings";
 import { useLanguage, interpolate } from "./hooks/useLanguage";
+import { recordExtraction } from "~utils/reviewPrompt";
+import { shouldShowUpdateNotification, getUpdateData } from "~utils/updateNotification";
 
 function TabsIndex() {
   const { t, isLoading: langLoading } = useLanguage();
   const [input, setInput] = useState("");
+  const [updateVersion, setUpdateVersion] = useState<string | null>(null);
   const [options, setOptions] = useState<ExtractionOptions>({
     sort: true,
     dedupe: true,
@@ -67,9 +73,36 @@ function TabsIndex() {
     }
   }, [settingsLoading, settings]);
 
-  const handleExtract = () => {
+  // Check for available updates
+  useEffect(() => {
+    const checkUpdate = async () => {
+      const shouldShow = await shouldShowUpdateNotification();
+      if (shouldShow) {
+        const data = await getUpdateData();
+        if (data.newVersion) {
+          setUpdateVersion(data.newVersion);
+        }
+      }
+    };
+    
+    checkUpdate();
+
+    // Listen for update notifications from background worker
+    const handleMessage = (message: any) => {
+      if (message.type === "update-available" && message.version) {
+        setUpdateVersion(message.version);
+      }
+    };
+
+    chrome.runtime.onMessage.addListener(handleMessage);
+    return () => chrome.runtime.onMessage.removeListener(handleMessage);
+  }, []);
+
+  const handleExtract = async () => {
     if (input.trim()) {
-      startExtraction(input, options);
+      await startExtraction(input, options);
+      // Record successful extraction for review prompt
+      await recordExtraction();
     }
   };
 
@@ -113,6 +146,17 @@ function TabsIndex() {
 
   return (
     <div className="min-h-screen bg-bg-primary">
+      {/* Review Prompt Modal */}
+      <ReviewPrompt />
+      
+      {/* Update Notification Modal */}
+      {updateVersion && (
+        <UpdateNotification
+          version={updateVersion}
+          onDismiss={() => setUpdateVersion(null)}
+        />
+      )}
+      
       {/* Header */}
       <header className="bg-brand-blue shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
@@ -336,6 +380,9 @@ function TabsIndex() {
                     </svg>
                     {t.footer.support.contribute}
                   </a>
+                </li>
+                <li>
+                  <ReviewButton />
                 </li>
               </ul>
             </div>

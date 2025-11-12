@@ -3,9 +3,11 @@
  * Opens tool tab on icon click
  * Brokers communication between tool page and offscreen page
  * Manages offscreen page lifecycle
+ * Detects extension updates
  */
 
 import type { Message, StartMessage } from "../types";
+import { markUpdateAvailable } from "../utils/updateNotification";
 
 // Port connections
 const toolPorts = new Map<string, chrome.runtime.Port>();
@@ -248,7 +250,7 @@ async function handleStartMessage(message: StartMessage): Promise<void> {
 }
 
 /**
- * Handle extension installation
+ * Handle extension installation and updates
  */
 chrome.runtime.onInstalled.addListener((details) => {
   console.log("WhoisExtractor: Email Tool installed", details.reason);
@@ -256,7 +258,37 @@ chrome.runtime.onInstalled.addListener((details) => {
   if (details.reason === "install") {
     // First-time installation
     console.log("Welcome to WhoisExtractor: Email Tool!");
+  } else if (details.reason === "update") {
+    const previousVersion = details.previousVersion;
+    const currentVersion = chrome.runtime.getManifest().version;
+    console.log(`Updated from ${previousVersion} to ${currentVersion}`);
   }
+});
+
+/**
+ * Listen for extension updates
+ * Fires when an update is available but not installed yet
+ */
+chrome.runtime.onUpdateAvailable.addListener(async (details) => {
+  console.log(`Update available: version ${details.version}`);
+  
+  // Store update information
+  await markUpdateAvailable(details.version);
+  
+  // Notify all connected tool pages about the update
+  toolPorts.forEach((toolPort) => {
+    try {
+      toolPort.postMessage({
+        type: "update-available",
+        version: details.version,
+      });
+    } catch (error) {
+      console.error("Background: Failed to notify tool page about update:", error);
+    }
+  });
+  
+  // Note: We don't auto-reload here to avoid interrupting user work
+  // User will be prompted with UpdateNotification component in the tool page
 });
 
 /**

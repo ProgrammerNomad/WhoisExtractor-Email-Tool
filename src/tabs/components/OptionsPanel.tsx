@@ -1,5 +1,6 @@
 import React from "react";
 import { useLanguage } from "../hooks/useLanguage";
+import { DEFAULT_FILTER_KEYWORDS } from "~types";
 
 export interface ExtractionOptions {
   sort: boolean;
@@ -34,8 +35,6 @@ const SEPARATOR_OPTIONS = [
   { value: "custom", label: "Custom" },
 ];
 
-const DEFAULT_KEYWORDS = `whois,domain,dns,proxy,priv,regi,webmaster,protc,obsc,anonymiz,@contac,host,gandi,support,qq.com,naver.com,hxmail.com,pro.net,xell.hk,corp.com,wix,.html,163,139,126`;
-
 export const OptionsPanel: React.FC<OptionsPanelProps> = ({
   options,
   setOptions,
@@ -43,7 +42,7 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
   totalCount,
 }) => {
   const { t } = useLanguage();
-  const [keywordText, setKeywordText] = React.useState(DEFAULT_KEYWORDS);
+  const [keywordText, setKeywordText] = React.useState(DEFAULT_FILTER_KEYWORDS);
   const [filterStringsText, setFilterStringsText] = React.useState("");
   const sortThreshold = 50000;
 

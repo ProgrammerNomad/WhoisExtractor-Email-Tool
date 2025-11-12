@@ -140,6 +140,25 @@ export const ar: Translation = {
     cleared: "تم مسح جميع البيانات",
   },
 
+  // Review Prompt
+  review: {
+    title: "هل تستمتع باستخدام WhoisExtractor؟",
+    message: "لقد كنت تستخدم WhoisExtractor لمدة {{days}} يومًا مع {{count}} عملية استخراج ناجحة. هل تمانع في ترك تقييم؟",
+    rateNow: "التقييم على متجر Chrome الإلكتروني",
+    later: "ربما لاحقًا",
+    dontAsk: "لا تسأل مرة أخرى",
+    thankYou: "شكرًا لك على ملاحظاتك!",
+  },
+
+  // Update Notification
+  update: {
+    title: "يتوفر تحديث",
+    message: "الإصدار {{version}} متاح الآن.",
+    description: "أعد تحميل الامتداد للتحديث إلى أحدث إصدار بميزات وتحسينات جديدة.",
+    updateNow: "التحديث الآن",
+    later: "لاحقًا",
+  },
+
   // Common
   common: {
     loading: "جارٍ التحميل...",
@@ -153,5 +172,6 @@ export const ar: Translation = {
     settings: "الإعدادات",
     help: "مساعدة",
     language: "اللغة",
+    review: "ترك تقييم",
   },
 }

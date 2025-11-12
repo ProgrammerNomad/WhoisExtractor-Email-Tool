@@ -137,6 +137,25 @@ export const en = {
     cleared: "All data cleared",
   },
 
+  // Review Prompt
+  review: {
+    title: "Enjoying WhoisExtractor?",
+    message: "You've been using WhoisExtractor for {{days}} days with {{count}} successful extractions. Would you mind leaving a review?",
+    rateNow: "Rate on Chrome Web Store",
+    later: "Maybe Later",
+    dontAsk: "Don't Ask Again",
+    thankYou: "Thank you for your feedback!",
+  },
+
+  // Update Notification
+  update: {
+    title: "Update Available",
+    message: "Version {{version}} is now available.",
+    description: "Reload the extension to update to the latest version with new features and improvements.",
+    updateNow: "Update Now",
+    later: "Later",
+  },
+
   // Common
   common: {
     loading: "Loading...",
@@ -150,6 +169,7 @@ export const en = {
     settings: "Settings",
     help: "Help",
     language: "Language",
+    review: "Leave a Review",
   },
 };
 

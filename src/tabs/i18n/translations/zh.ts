@@ -140,6 +140,25 @@ export const zh: Translation = {
     cleared: "所有数据已清除",
   },
 
+  // Review Prompt
+  review: {
+    title: "喜欢 WhoisExtractor 吗？",
+    message: "您已使用 WhoisExtractor {{days}} 天，成功提取了 {{count}} 次。您愿意留下评价吗？",
+    rateNow: "在 Chrome 网上应用店评分",
+    later: "稍后再说",
+    dontAsk: "不再询问",
+    thankYou: "感谢您的反馈！",
+  },
+
+  // Update Notification
+  update: {
+    title: "有可用更新",
+    message: "版本 {{version}} 现已可用。",
+    description: "重新加载扩展程序以更新到具有新功能和改进的最新版本。",
+    updateNow: "立即更新",
+    later: "稍后",
+  },
+
   // Common
   common: {
     loading: "加载中...",
@@ -153,5 +172,6 @@ export const zh: Translation = {
     settings: "设置",
     help: "帮助",
     language: "语言",
+    review: "留下评价",
   },
 }

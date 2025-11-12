@@ -140,6 +140,25 @@ export const ja: Translation = {
     cleared: "すべてのデータがクリアされました",
   },
 
+  // Review Prompt
+  review: {
+    title: "WhoisExtractorをお楽しみいただけていますか？",
+    message: "WhoisExtractorを{{days}}日間使用し、{{count}}回の抽出に成功しました。レビューを残していただけますか？",
+    rateNow: "Chrome ウェブストアで評価する",
+    later: "後で",
+    dontAsk: "今後表示しない",
+    thankYou: "フィードバックをありがとうございます！",
+  },
+
+  // Update Notification
+  update: {
+    title: "アップデートが利用可能です",
+    message: "バージョン {{version}} が利用可能になりました。",
+    description: "拡張機能を再読み込みして、新機能と改善を含む最新バージョンに更新してください。",
+    updateNow: "今すぐ更新",
+    later: "後で",
+  },
+
   // Common
   common: {
     loading: "読み込み中...",
@@ -153,5 +172,6 @@ export const ja: Translation = {
     settings: "設定",
     help: "ヘルプ",
     language: "言語",
+    review: "レビューを残す",
   },
 };

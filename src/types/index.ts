@@ -118,6 +118,9 @@ export const DEFAULT_SETTINGS: Settings = {
 // Storage key
 export const STORAGE_KEY = "whois_mail:settings";
 
+// Default filter keywords for UI (optimized - removes duplicates and redundant patterns)
+export const DEFAULT_FILTER_KEYWORDS = "whois,domain,dns,proxy,priv,regi,webmaster,protc,obsc,anonymiz,@contac,host,gandi,support,qq.com,naver.com,hxmail.com,pro.net,xell.hk,corp.com,wix,.html,163,139,126,post,hello,service,.pk,.ru,.ra,.za,.in,kontakt,contacto,admin,hola,office,reservation,help,cust,mail,outloo,yahoo,reception,frontdesk,dpo,hr@,enquiries,realestate@,subscribe,filler,aol,gmx,client,amministrazione@,order,mysite,reply,.com.br,.com.bd,blog,podcast,test,destek,abc,xyz,cs@,referral,bookings@,ticket@,license@,paypal,payment@,website,appointments,hi@,team@,membership@,shop@,sales@,marketing@,newsletter,news,billing@,accounts@,accounting@,supporto@,service@,security@,abuse@,noc@,postmaster@,hostmaster@";
+
 // Separator options
 export type SeparatorType = "comma" | "newline" | "semicolon" | "pipe" | "tab";
 

@@ -140,6 +140,25 @@ export const pt: Translation = {
     cleared: "Todos os dados removidos",
   },
 
+  // Review Prompt
+  review: {
+    title: "Gostando do WhoisExtractor?",
+    message: "Você está usando o WhoisExtractor há {{days}} dias com {{count}} extrações bem-sucedidas. Você poderia deixar uma avaliação?",
+    rateNow: "Avaliar na Chrome Web Store",
+    later: "Talvez mais tarde",
+    dontAsk: "Não perguntar novamente",
+    thankYou: "Obrigado pelo seu feedback!",
+  },
+
+  // Update Notification
+  update: {
+    title: "Atualização disponível",
+    message: "A versão {{version}} está disponível agora.",
+    description: "Recarregue a extensão para atualizar para a versão mais recente com novos recursos e melhorias.",
+    updateNow: "Atualizar agora",
+    later: "Mais tarde",
+  },
+
   // Common
   common: {
     loading: "Carregando...",
@@ -153,5 +172,6 @@ export const pt: Translation = {
     settings: "Configurações",
     help: "Ajuda",
     language: "Idioma",
+    review: "Deixar uma avaliação",
   },
 };

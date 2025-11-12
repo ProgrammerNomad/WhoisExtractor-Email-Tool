@@ -3,7 +3,14 @@
 A powerful, **privacy-first** Chrome extension for extracting email addresses from text and files. Built with Plasmo, React, and TailwindCSS.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Chrome Extension](https://img.shields.io/badge/Chrome-Extension-brightgreen.svg)](https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool)
+[![Chrome Web Store](https://img.shields.io/badge/Chrome-Web%20Store-brightgreen.svg)](https://chromewebstore.google.com/detail/whoisextractor-email-tool/hlkfbiaphhmngdlcfgfagfjicbadomnj)
+[![Version](https://img.shields.io/badge/version-1.0.1-blue.svg)](CHANGELOG.md)
+
+## Install from Chrome Web Store
+
+**[Download WhoisExtractor: Email Tool](https://chromewebstore.google.com/detail/whoisextractor-email-tool/hlkfbiaphhmngdlcfgfagfjicbadomnj)**
+
+If you find this useful, please [leave a review](https://chromewebstore.google.com/detail/whoisextractor-email-tool/hlkfbiaphhmngdlcfgfagfjicbadomnj/reviews) on the Chrome Web Store!
 
 ## Features
 
@@ -16,10 +23,15 @@ A powerful, **privacy-first** Chrome extension for extracting email addresses fr
 - **Modern UI** - Clean, intuitive interface with real-time progress
 - **Configurable** - Adjust chunk sizes, batch sizes, and sorting thresholds
 - **Accessible** - Full keyboard navigation and screen reader support
+- **Multi-Language Support** - Available in 10 languages (EN, ES, FR, DE, PT, RU, AR, HI, JA, ZH)
 
 ## Quick Start
 
-### Installation
+### For Users
+
+**[Install from Chrome Web Store](https://chromewebstore.google.com/detail/whoisextractor-email-tool/hlkfbiaphhmngdlcfgfagfjicbadomnj)** - One-click installation
+
+### For Developers
 
 1. **Clone the repository:**
    ```bash
@@ -140,21 +152,35 @@ npm run test:watch   # Run tests in watch mode
 
 See [PRIVACY.md](PRIVACY.md) for full privacy policy.
 
-## License
+## Changelog
 
-MIT License - see [LICENSE](LICENSE) file for details.
+See [CHANGELOG.md](CHANGELOG.md) for version history and updates.
 
 ## Contributing
 
 Contributions are welcome! Open an issue or submit a PR.
 
-## Issues & Support
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-- **Bug Reports**: [Open an issue](https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool/issues)
-- **Feature Requests**: [Open an issue](https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool/issues)
+## License
+
+MIT License - see [LICENSE](LICENSE) file for details.
+
+## Feedback & Support
+
+- Bug Reports: [Open an issue](https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool/issues)
+- Feature Requests: [Open an issue](https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool/issues)
+- Review: [Leave a review on Chrome Web Store](https://chromewebstore.google.com/detail/whoisextractor-email-tool/hlkfbiaphhmngdlcfgfagfjicbadomnj/reviews)
+- Discussions: [GitHub Discussions](https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool/discussions)
 
 ---
 
 **WhoisExtractor: Email Tool** - Privacy-first email extraction, locally on your device.
 
-Made by [ProgrammerNomad](https://github.com/ProgrammerNomad)
+Made with love by [ProgrammerNomad](https://github.com/ProgrammerNomad)
+
+If you find this useful, please [star the repo](https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool) and [leave a review](https://chromewebstore.google.com/detail/whoisextractor-email-tool/hlkfbiaphhmngdlcfgfagfjicbadomnj/reviews)!

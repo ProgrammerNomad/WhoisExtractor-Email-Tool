@@ -1,7 +1,7 @@
 {
   "name": "whois-extractor-email-tool",
   "displayName": "WhoisExtractor: Email Tool",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Local email extraction from text and files - Multi-language support",
   "author": "ProgrammerNomad",
   "license": "MIT",

@@ -1,27 +1,6 @@
 import { useState, useEffect } from "react";
 import type { ExtractionOptions } from "../components/OptionsPanel";
-
-const STORAGE_KEY = "whois_mail:settings";
-
-interface Settings {
-  chunkSize: number;
-  batchSize: number;
-  sortThreshold: number;
-  maxSetSize: number;
-  keywords: string[];
-  removeNumeric: boolean;
-  privacyNoticeShown: boolean;
-}
-
-const DEFAULT_SETTINGS: Settings = {
-  chunkSize: 262144, // 256 KB
-  batchSize: 1000,
-  sortThreshold: 50000,
-  maxSetSize: 200000,
-  keywords: [],
-  removeNumeric: true,
-  privacyNoticeShown: false,
-};
+import { DEFAULT_SETTINGS, STORAGE_KEY, type Settings } from "~types";
 
 export const useSettings = () => {
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
@@ -50,7 +29,7 @@ export const useSettings = () => {
     dedupe: true,
     separator: "\n",
     keywords: settings.keywords,
-    keywordsEnabled: false,
+    keywordsEnabled: false, // Disabled by default, user must enable
     groupBy: "none",
     removeNumeric: settings.removeNumeric,
     extractionType: "email",

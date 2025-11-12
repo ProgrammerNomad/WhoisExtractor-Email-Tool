@@ -139,6 +139,25 @@ export const hi: Translation = {
     cleared: "सभी डेटा साफ़ कर दिया गया",
   },
 
+  // Review Prompt
+  review: {
+    title: "WhoisExtractor का आनंद ले रहे हैं?",
+    message: "आप {{days}} दिनों से WhoisExtractor का उपयोग कर रहे हैं और {{count}} सफल निष्कर्षण किए हैं। क्या आप समीक्षा देना चाहेंगे?",
+    rateNow: "Chrome Web Store पर रेटिंग दें",
+    later: "शायद बाद में",
+    dontAsk: "दोबारा न पूछें",
+    thankYou: "आपकी प्रतिक्रिया के लिए धन्यवाद!",
+  },
+
+  // Update Notification
+  update: {
+    title: "अपडेट उपलब्ध है",
+    message: "संस्करण {{version}} अब उपलब्ध है।",
+    description: "नई सुविधाओं और सुधारों के साथ नवीनतम संस्करण में अपडेट करने के लिए एक्सटेंशन को पुनः लोड करें।",
+    updateNow: "अभी अपडेट करें",
+    later: "बाद में",
+  },
+
   // Common
   common: {
     loading: "लोड हो रहा है...",
@@ -152,5 +171,6 @@ export const hi: Translation = {
     settings: "सेटिंग्स",
     help: "सहायता",
     language: "भाषा",
+    review: "समीक्षा दें",
   },
 };

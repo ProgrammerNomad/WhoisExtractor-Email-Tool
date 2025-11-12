@@ -93,6 +93,32 @@ export function removeNumericEmails(emails: string[]): string[] {
 }
 
 /**
+ * Filter emails by keywords (remove emails containing any keyword)
+ * @param emails - Array of emails
+ * @param keywords - Array of keywords to filter out
+ * @returns Filtered array without emails containing keywords
+ */
+export function filterByKeywords(emails: string[], keywords: string[]): string[] {
+  if (!keywords || keywords.length === 0) {
+    return emails;
+  }
+
+  // Normalize keywords to lowercase for case-insensitive matching
+  const normalizedKeywords = keywords.map(k => k.toLowerCase().trim()).filter(k => k.length > 0);
+  
+  if (normalizedKeywords.length === 0) {
+    return emails;
+  }
+
+  return emails.filter((email) => {
+    const emailLower = email.toLowerCase();
+    
+    // Check if email contains any of the keywords
+    return !normalizedKeywords.some(keyword => emailLower.includes(keyword));
+  });
+}
+
+/**
  * Create a deduplication Set from an array of emails
  * @param emails - Array of emails
  * @returns Set of lowercase emails
