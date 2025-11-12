@@ -16,13 +16,14 @@ If you find this useful, please [leave a review](https://chromewebstore.google.c
 
 ### Core Functionality
 - **100% Local Processing** - Your data never leaves your device
-- **Fast Client-Side Extraction** - Instant regex-based email extraction
+- **Web Worker Architecture** - Non-blocking processing for files up to 300 MB
 - **Smart Deduplication** - Case-insensitive, automatic duplicate removal
-- **Keyword Filtering** - 83 pre-configured keywords to filter out generic/privacy emails
+- **Advanced Keyword Filtering** - 94 pre-configured keywords with smart pattern matching
 - **Multiple Input Methods** - Paste text or upload files (.txt, .csv, etc.)
 - **Flexible Export** - Copy to clipboard or export as .txt/.csv
-- **Real-Time Progress** - Live count and streaming results display
+- **Real-Time Progress** - Live count, file reading progress, and streaming results
 - **Full-Page Experience** - Opens in a new tab, not a cramped popup
+- **Memory Efficient** - Files displayed as placeholders (not in textarea) to save memory
 
 ### Advanced Features
 - **Multi-Language Support** - 10 languages with instant switching:
@@ -34,13 +35,22 @@ If you find this useful, please [leave a review](https://chromewebstore.google.c
 - **Update Notifications** - Automatic Chrome Web Store update detection
 - **Grand Total Tracking** - Lifetime email extraction counter across all sessions
 - **Keyboard Shortcut** - Quick access via Ctrl+Shift+E
-- **Configurable** - Adjust sorting thresholds and filtering options
+- **Smart Pattern Matching** - Domain, prefix, suffix, and generic keyword filtering
+- **File Reading Progress** - Real-time progress bar during file loading (no freeze)
+- **Auto-Clear on New File** - Automatic cleanup when selecting new files
+
+### Performance & Capacity
+- **Small files (< 2 MB)**: Instant processing
+- **Medium files (2-100 MB)**: Background Web Worker processing
+- **Large files (100-300 MB)**: Memory-efficient processing with progress tracking
+- **Very large files (> 300 MB)**: Clear error with split instructions
 
 ### Privacy & Performance
 - **No Data Upload** - All processing happens in your browser
 - **No Tracking** - Zero analytics or external calls
 - **No CDNs** - All assets bundled locally
 - **Memory Safe** - Smart thresholds prevent browser freezing
+- **Stale Connection Recovery** - Automatic reconnection on errors
 - **Accessible** - Full keyboard navigation and screen reader support
 
 ## Quick Start
@@ -90,30 +100,44 @@ npm run package
 1. Click the extension icon to open the tool page in a new tab (or use keyboard shortcut **Ctrl+Shift+E**)
 2. Choose input method:
    - **Paste Text**: Copy and paste text containing emails
-   - **Upload File**: Upload a .txt, .csv, or other text file
+   - **Upload File**: Upload a .txt, .csv, or other text file (up to 300 MB)
+     - Files are processed with progress tracking (no UI freeze)
+     - Large files display as placeholders to save memory
 3. Configure options (optional):
-   - Sort alphabetically
+   - Sort alphabetically (auto-disabled for 50k+ emails)
    - Remove duplicates (default: ON)
    - Choose output separator
-   - Add keyword filters (83 pre-configured keywords available)
+   - Add keyword filters (94 pre-configured keywords available)
 4. Click "Extract Emails"
+   - Small files (< 2 MB): Instant extraction
+   - Large files (2-300 MB): Web Worker with progress bar
 5. View results in real-time with streaming updates
 6. Export via Copy, .txt, or .csv
 
 ### Advanced Options
 
-- **Keyword Filtering**: 83 pre-configured keywords to filter out generic/privacy-protected emails
+- **Keyword Filtering**: 94 pre-configured keywords with smart pattern matching:
+  - **Domain patterns**: `qq.com`, `yahoo.com` (exact domain match)
+  - **Prefix patterns**: `admin@`, `support@` (must start with)
+  - **Suffix patterns**: `@contact`, `@gmail` (appears anywhere)
+  - **Generic keywords**: `admin`, `webmaster` (matches anywhere in email)
 - **Grouping**: Group results by domain
 - **Sorting**: Auto-sort with smart threshold (default: 50,000 emails)
-- **Memory Safety**: Auto-pause if memory threshold exceeded
+- **Memory Safety**: Auto-pause if memory threshold exceeded (200,000 emails)
 - **Multi-Language**: Switch between 10 languages instantly
 - **Dark Mode**: Toggle dark/light theme with persistence
+- **File Size Limits**: 
+  - < 2 MB: Instant processing
+  - 2-300 MB: Web Worker with progress tracking
+  - \> 300 MB: Error with split instructions
 
 ## Architecture
 
-**Note**: Current implementation uses **client-side extraction** directly in the tool page. The full Web Worker architecture described below is available in the codebase but currently disabled for simplicity.
+### Web Worker Architecture (Fully Implemented)
 
-### Current Architecture (Simplified)
+The extension uses a **hybrid approach** that automatically selects the best processing method based on file size:
+
+**Small Files (< 2 MB)**: Direct client-side extraction (instant)
 
 ```
 ┌──────────────────┐     (click icon)     ┌──────────────────┐
@@ -133,7 +157,7 @@ npm run package
                                           └──────────────────┘
 ```
 
-### Planned Architecture (Full Worker Implementation)
+**Large Files (2-300 MB)**: Full Web Worker with progress tracking
 
 ```
 ┌──────────────────┐     (click icon)     ┌──────────────────┐
@@ -169,18 +193,39 @@ npm run package
                                           └──────────────────┘
 ```
 
-### Key Components
+### Component Responsibilities
 
-- **Tool Page (Full Tab)** - User interface that opens in a new browser tab (not a popup)
-- **Extension Icon** - Opens/focuses tool page tab (keyboard shortcut: Ctrl+Shift+E)
-- **Language Switcher** - Instant language switching with 10 language support
-- **Theme Switcher** - Dark/light mode toggle with persistence
-- **Review System** - Smart review prompts based on usage and extraction count
-- **Update Notifications** - Automatic detection of Chrome Web Store updates
-- **Client-Side Extraction** - Fast regex-based email extraction (current implementation)
-- **Background Service Worker** - Manages update notifications and review tracking (message broker ready for future worker implementation)
-- **Offscreen Page** - Available for hosting Web Worker (future enhancement)
-- **Web Worker** - Heavy parsing with chunking and batching (code ready, currently disabled)
+| Component | Role | Status |
+|-----------|------|--------|
+| **Tool Page UI** | Full-page interface for input, options, results display | ✅ Active |
+| **Extension Icon** | Opens/focuses tool page tab (Ctrl+Shift+E shortcut) | ✅ Active |
+| **Language Switcher** | Instant language switching (10 languages) | ✅ Active |
+| **Theme Switcher** | Dark/light mode toggle with persistence | ✅ Active |
+| **Review System** | Smart review prompts based on usage | ✅ Active |
+| **Update Notifications** | Auto-detection of Chrome Web Store updates | ✅ Active |
+| **File Reader** | Progress-tracked file loading (no UI freeze) | ✅ Active |
+| **Background Service Worker** | Opens/focuses tabs, manages offscreen page, forwards messages | ✅ Active |
+| **Offscreen Page** | Hosts Web Worker, relays messages to background | ✅ Active (2-300 MB files) |
+| **Web Worker** | Heavy parsing with chunking, batching, deduplication | ✅ Active (2-300 MB files) |
+| **Client-Side Extraction** | Fast regex-based extraction for small inputs | ✅ Active (< 2 MB files) |
+
+### Processing Flow (Large Files)
+
+1. **User uploads file** → FileReader reads with progress events (no freeze)
+2. **File size check** → < 2 MB: direct extraction | 2-300 MB: Web Worker | > 300 MB: error
+3. **Large file path**:
+   - Tool page → Background (Port) → Offscreen page
+   - Offscreen spawns Web Worker with inline code
+   - Worker processes in 256 KB chunks with 1 KB overlap
+   - Worker sends batches (1000 emails) back to UI
+   - Results stream to display (no blocking)
+4. **Filtering** → Applied on each batch (dedup, sort, keywords, domain grouping)
+5. **Memory safety** → Auto-pause at 200k emails threshold
+6. **Cancellation** → User can stop anytime; worker terminates immediately
+
+### Stale Connection Recovery
+
+Background service worker detects dead Port connections and recreates offscreen document automatically. This prevents "Receiving end does not exist" errors on subsequent extractions.
 
 ## Development
 
