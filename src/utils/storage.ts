@@ -3,7 +3,8 @@
  * Wraps chrome.storage.local with type-safe methods
  */
 
-import { Settings, DEFAULT_SETTINGS, STORAGE_KEY } from "~types";
+import { DEFAULT_SETTINGS, STORAGE_KEY } from "~types";
+import type { Settings } from "~types";
 
 /**
  * Get settings from chrome.storage.local

@@ -38,6 +38,12 @@ function TabsIndex() {
   const [updateVersion, setUpdateVersion] = useState<string | null>(null);
   const [grandTotal, setGrandTotal] = useState<number>(0); // Lifetime total across all sessions
   const lastRecordedCount = useRef<number>(0); // Track last recorded extraction
+  
+  // File reading states
+  const [isReadingFile, setIsReadingFile] = useState(false);
+  const [fileReadProgress, setFileReadProgress] = useState(0);
+  const [loadingMessage, setLoadingMessage] = useState("");
+  
   const [options, setOptions] = useState<ExtractionOptions>({
     sort: true,
     dedupe: true,
@@ -171,26 +177,94 @@ function TabsIndex() {
     setInput("");
     clearResults();
     lastRecordedCount.current = 0; // Reset the tracking ref
+    setIsReadingFile(false);
+    setFileReadProgress(0);
+    setLoadingMessage("");
   };
 
   const handleFileUpload = async (file: File) => {
     try {
-      const text = await file.text();
-      setInput(text);
+      // Clear previous results when new file is selected
+      clearResults();
+      lastRecordedCount.current = 0;
       
-      // Auto-extract for files
       const fileSize = file.size;
+      
+      // For very large files (>300 MB), show warning
+      if (fileSize >= 300 * 1024 * 1024) {
+        alert(
+          `Very large file detected (${(fileSize / 1024 / 1024).toFixed(2)} MB).\n\n` +
+            "⚠️ Files over 300 MB cannot be processed due to browser memory limitations.\n\n" +
+            "Recommendation:\n" +
+            "• Split the file into smaller chunks (< 300 MB each)\n" +
+            "• Process each chunk separately\n" +
+            "• Use a text editor to split the file if needed\n\n" +
+            "Sorry for the inconvenience!"
+        );
+        return;
+      }
+
+      // Show confirmation for large files
       if (fileSize >= 2 * 1024 * 1024) {
         const shouldContinue = confirm(
           `Large file detected (${(fileSize / 1024 / 1024).toFixed(2)} MB).\n\n` +
-            "Processing will run in background and may take a while.\n\n" +
+            "Processing will run in background and may take a while.\n" +
+            "The file content will NOT be displayed in the textarea to save memory.\n\n" +
             "Continue?"
         );
-        if (!shouldContinue) return;
+        if (!shouldContinue) {
+          return;
+        }
       }
+
+      setIsReadingFile(true);
+      setFileReadProgress(0);
+      setLoadingMessage("Reading file...");
+
+      // Read file with progress events
+      const text = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onloadstart = () => {
+          setLoadingMessage("Reading file...");
+          setFileReadProgress(0);
+        };
+
+        reader.onprogress = (event) => {
+          if (event.lengthComputable) {
+            const percentComplete = Math.round((event.loaded / event.total) * 100);
+            setFileReadProgress(percentComplete);
+            setLoadingMessage(`Reading file: ${percentComplete}%`);
+          }
+        };
+
+        reader.onload = () => {
+          setFileReadProgress(100);
+          setLoadingMessage("File loaded, starting extraction...");
+          resolve(reader.result as string);
+        };
+
+        reader.onerror = () => {
+          reject(new Error("Failed to read file"));
+        };
+
+        reader.readAsText(file);
+      });
+
+      // Small delay to show "File loaded" message
+      await new Promise(resolve => setTimeout(resolve, 200));
+
+      setIsReadingFile(false);
       
+      // DON'T set textarea content for files - save memory!
+      // Only show a placeholder message
+      setInput(`[File: ${file.name} (${(fileSize / 1024 / 1024).toFixed(2)} MB) - Content not displayed to save memory]`);
+
+      // Start extraction immediately without showing file content
+      setLoadingMessage(t.input.extracting);
       startExtraction(text, options);
     } catch (error) {
+      setIsReadingFile(false);
       alert("Failed to read file: " + (error as Error).message);
     }
   };
@@ -287,10 +361,11 @@ function TabsIndex() {
 
         {/* Progress Bar */}
         <ProgressBar
-          progress={progress}
-          isExtracting={isExtracting}
+          progress={isReadingFile ? fileReadProgress : progress}
+          isExtracting={isExtracting || isReadingFile}
           totalCount={totalCount}
           onCancel={handleCancel}
+          loadingMessage={isReadingFile ? loadingMessage : undefined}
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

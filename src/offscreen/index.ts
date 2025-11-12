@@ -5,7 +5,7 @@
  */
 
 import { chunkWithOverlap, calculateProgress } from "../utils/chunking";
-import { extractEmails } from "../utils/regex";
+import { extractEmails, applyOptions } from "../utils/regex";
 import type {
   Message,
   StartDirectMessage,
@@ -78,6 +78,7 @@ async function handleDirectExtraction(
     const chunks = Array.from(chunkWithOverlap(input, chunkSize, overlap));
     const totalChunks = chunks.length;
 
+    // Extract emails from all chunks
     for (let i = 0; i < totalChunks; i++) {
       const chunk = chunks[i];
       const newEmails = extractEmails(chunk, seen);
@@ -101,8 +102,12 @@ async function handleDirectExtraction(
       sendBatchToBackground(id, batch, 100, seen.size);
     }
 
+    // Apply final options to all extracted emails
+    const allEmails = Array.from(seen);
+    const finalEmails = applyOptions(allEmails, options);
+
     // Send completion
-    sendCompleteToBackground(id, seen.size, options.sort);
+    sendCompleteToBackground(id, finalEmails.length, options.sort);
   } catch (error) {
     sendErrorToBackground(
       id,

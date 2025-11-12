@@ -56,17 +56,6 @@ chrome.commands.onCommand.addListener((command) => {
  * Create offscreen document if it doesn't exist
  */
 async function ensureOffscreenPage(): Promise<void> {
-  // Temporarily disabled - handle extraction in background directly
-  // TODO: Implement proper offscreen page support with Plasmo
-  console.log("Background: Offscreen page creation skipped (not needed for basic extraction)");
-  offscreenPageCreated = true;
-  return;
-  
-  /* Original code - keep for future use
-  if (offscreenPageCreated) {
-    return;
-  }
-
   try {
     // Check if offscreen document already exists
     const existingContexts = await chrome.runtime.getContexts({
@@ -74,13 +63,22 @@ async function ensureOffscreenPage(): Promise<void> {
     });
 
     if (existingContexts.length > 0) {
-      offscreenPageCreated = true;
-      return;
+      console.log("Background: Offscreen page already exists");
+      
+      // If we have an existing context but no port, the connection is stale
+      if (!offscreenPort) {
+        console.log("Background: Offscreen exists but port is dead, recreating...");
+        await chrome.offscreen.closeDocument();
+        offscreenPageCreated = false;
+      } else {
+        offscreenPageCreated = true;
+        return;
+      }
     }
 
     // Create offscreen document
     await chrome.offscreen.createDocument({
-      url: chrome.runtime.getURL("offscreen.html"),
+      url: chrome.runtime.getURL("offscreen/offscreen.html"),
       reasons: [chrome.offscreen.Reason.WORKERS],
       justification: "Run Web Worker for email extraction processing",
     });
@@ -91,7 +89,6 @@ async function ensureOffscreenPage(): Promise<void> {
     console.error("Background: Failed to create offscreen page:", error);
     throw error;
   }
-  */
 }
 
 /**
@@ -128,6 +125,7 @@ function handleToolConnection(port: chrome.runtime.Port): void {
  * Handle offscreen port connection
  */
 function handleOffscreenConnection(port: chrome.runtime.Port): void {
+  console.log("Background: Offscreen port connected");
   offscreenPort = port;
 
   port.onMessage.addListener((message: Message) => {
@@ -145,6 +143,11 @@ function handleOffscreenConnection(port: chrome.runtime.Port): void {
     console.log("Background: Offscreen disconnected");
     offscreenPort = null;
     offscreenPageCreated = false;
+    
+    // Try to close and recreate offscreen document
+    chrome.offscreen.closeDocument().catch(() => {
+      console.log("Background: No offscreen document to close");
+    });
   });
 }
 
@@ -186,67 +189,75 @@ async function handleToolMessage(
 async function handleStartMessage(message: StartMessage): Promise<void> {
   const { input, options, id } = message;
 
-  // Ensure offscreen page exists (currently disabled)
-  await ensureOffscreenPage();
+  try {
+    // Ensure offscreen page exists
+    await ensureOffscreenPage();
 
-  // For now, send a message indicating extraction is not yet implemented
-  // This will be handled when we properly implement offscreen pages with Plasmo
-  console.log("Background: Extraction requested but offscreen page not available");
-  
-  // Send error back to tool page
-  toolPorts.forEach((toolPort) => {
-    try {
-      toolPort.postMessage({
-        type: "error",
-        id,
-        message: "Extraction feature is being set up. Please refresh the page and try again.",
-      });
-    } catch (error) {
-      console.error("Background: Failed to send error:", error);
+    // Wait for offscreen port to connect (retry up to 2 seconds)
+    let retries = 0;
+    const maxRetries = 20; // 20 * 100ms = 2 seconds max wait
+    
+    while (!offscreenPort && retries < maxRetries) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      retries++;
+      
+      if (retries % 5 === 0) {
+        console.log(`Background: Waiting for offscreen port... (${retries * 100}ms)`);
+      }
     }
-  });
 
-  /* Original implementation - keep for when offscreen is working
-  // Wait a bit for offscreen port to connect
-  if (!offscreenPort) {
-    await new Promise((resolve) => setTimeout(resolve, 100));
-  }
+    if (!offscreenPort) {
+      throw new Error("Failed to connect to offscreen page after 2 seconds");
+    }
+    
+    console.log(`Background: Offscreen port connected after ${retries * 100}ms`);
 
-  if (!offscreenPort) {
-    throw new Error("Failed to connect to offscreen page");
-  }
+    // Determine input size
+    const inputSize =
+      typeof input === "string"
+        ? new Blob([input]).size
+        : input.byteLength;
 
-  // Determine input size
-  const inputSize =
-    typeof input === "string"
-      ? new Blob([input]).size
-      : input.byteLength;
+    console.log(
+      `Background: Input size: ${(inputSize / 1024).toFixed(2)} KB`
+    );
 
-  console.log(
-    `Background: Input size: ${(inputSize / 1024).toFixed(2)} KB`
-  );
-
-  // Decide extraction strategy based on size
-  if (inputSize < 262144) {
-    // Small input (< 256 KB): Use direct offscreen extraction
-    console.log("Background: Using direct extraction");
-    offscreenPort.postMessage({
-      type: "start-direct",
-      id,
-      input: typeof input === "string" ? input : new TextDecoder().decode(input),
-      options,
+    // Decide extraction strategy based on size
+    if (inputSize < 262144) {
+      // Small input (< 256 KB): Use direct offscreen extraction
+      console.log("Background: Using direct extraction");
+      offscreenPort.postMessage({
+        type: "start-direct",
+        id,
+        input: typeof input === "string" ? input : new TextDecoder().decode(input),
+        options,
+      });
+    } else {
+      // Large input (≥ 256 KB): Use Web Worker
+      console.log("Background: Using Web Worker extraction");
+      offscreenPort.postMessage({
+        type: "start-worker",
+        id,
+        input: typeof input === "string" ? input : new TextDecoder().decode(input),
+        options,
+      });
+    }
+  } catch (error) {
+    console.error("Background: Error in handleStartMessage:", error);
+    
+    // Send error back to all tool pages
+    toolPorts.forEach((toolPort) => {
+      try {
+        toolPort.postMessage({
+          type: "error",
+          id,
+          message: error instanceof Error ? error.message : "Failed to start extraction",
+        });
+      } catch (err) {
+        console.error("Background: Failed to send error:", err);
+      }
     });
-  } else {
-    // Large input (≥ 256 KB): Use Web Worker
-    console.log("Background: Using Web Worker extraction");
-    offscreenPort.postMessage({
-      type: "start-worker",
-      id,
-      input: typeof input === "string" ? input : new TextDecoder().decode(input),
-      options,
-    });
   }
-  */
 }
 
 /**

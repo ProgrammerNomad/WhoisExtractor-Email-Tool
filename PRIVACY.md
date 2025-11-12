@@ -1,160 +1,191 @@
 # Privacy Policy - WhoisExtractor: Email Tool
 
-**Last Updated:** November 10, 2025
+**Last Updated:** November 12, 2025
 
-## Overview
+## Simple Summary
 
-WhoisExtractor: Email Tool is a Chrome extension designed to extract email addresses from text and files **locally on your device**. We take your privacy seriously and are committed to transparency about how your data is handled.
+WhoisExtractor is a browser extension that extracts email addresses from text and files. **Everything happens on your computer** - nothing is sent to the internet.
 
-## Data Processing
+**In Plain English:**
+- ✅ Your files and text stay on your computer
+- ✅ We don't collect any of your data
+- ✅ We don't track what you do
+- ✅ We don't see what emails you extract
+- ✅ No sign-up or account needed
 
-### Local Processing (Default)
+---
 
-- **All email extraction happens locally** in your browser
-- **No data is sent to external servers** by default
-- **No data is uploaded** to our servers or third parties
-- Text and files you process **remain on your device**
-- Extraction is performed using Web Workers in an isolated environment
+## How Your Data is Processed
 
-### Storage
+### Everything Stays Local
 
-- Settings are stored locally using `chrome.storage.local`
-- Storage is **encrypted** and **isolated** to this extension
-- No personally identifiable information is collected
-- Settings include:
-  - Extraction preferences (sort, dedupe, separator)
-  - Chunk size and performance thresholds
-  - Keyword filters (if you choose to save them)
-  - Privacy notice acknowledgment
+When you use this extension:
 
-## What We Do NOT Collect
+1. **Files you upload** → Only read by your browser, never sent anywhere
+2. **Emails you extract** → Only shown to you, never stored or sent
+3. **Settings you change** → Saved in your browser only (like a bookmark)
+
+**Think of it like a calculator** - it does the work on your device, nothing leaves your computer.
+
+### Technical Processing (For Large Files)
+
+For files larger than 256 KB (about 50 pages of text), we use a browser feature called "Web Workers" to prevent freezing. This is **still 100% local** - it's just using a different part of your browser's memory.
+
+**Simple analogy:** It's like using more RAM on your computer - faster processing, but still private to you.
+
+---
+
+## What We Store
+
+### On Your Computer (Chrome Storage)
+
+- **Your preferences:** Sort order, separator choice, filter options
+- **Privacy notice:** Whether you've seen the first-time privacy message
+
+**Where it's stored:** Chrome's secure storage (same place as your bookmarks)  
+**Who can access it:** Only you, on your computer  
+**How to delete:** Uninstall the extension or clear Chrome data
+
+### What We DO NOT Store
 
 - ❌ Email addresses you extract
-- ❌ Text content you paste or upload
-- ❌ File names or file contents
-- ❌ Browsing history
-- ❌ Personal information
-- ❌ Analytics or usage tracking
-- ❌ IP addresses
+- ❌ Files or text you upload
+- ❌ Your name or email address
+- ❌ Your browsing history
+- ❌ Anything about you or your usage
+
+---
 
 ## Permissions Explained
 
-### Required Permissions
+When you install this extension, Chrome asks for permissions. Here's what they mean:
 
-- **`storage`** - Store your settings and preferences locally
-- **`clipboardWrite`** - Allow you to copy extracted emails to clipboard
+| Permission | What It Does | Why We Need It |
+|------------|-------------|----------------|
+| **Storage** | Save your settings (like "sort emails") | So you don't have to re-select options every time |
+| **Offscreen** | Use background processing for large files | Keeps browser responsive with big files (300 MB+) |
 
-### Optional Permissions
+**That's it!** No access to your browsing, no internet connection, no data collection.
 
-- **`contextMenus`** - (Optional) Add "Extract selected text" to right-click menu
-  - Only activated if you enable this feature
-  - Only processes text you explicitly select and trigger
+---
 
-- **`nativeMessaging`** - (Optional) For future native helper for very large files
-  - Only used if you explicitly opt-in to this feature
-  - Requires separate native application installation
+## Your Rights (Required by Law)
 
-## User Control
-
-### You Control Your Data
-
-- **Extract locally** - Default mode, all processing in browser
-- **Cancel anytime** - Stop processing and release memory immediately
-- **Clear settings** - Reset all preferences to defaults
-- **No account required** - No login, no user tracking
-
-### Opt-In Features (Future)
-
-If we add optional features that involve external processing:
-
-- **Explicit opt-in required** - Clear consent requested before activation
-- **Privacy modal** - Detailed explanation shown before first use
-- **Clear retention policy** - Told exactly how long data is kept
-- **OAuth authentication** - If cloud export is added, secure authentication
-- **Consent stored** - Your opt-in preferences saved locally
-
-## Third-Party Services
-
-- **No third-party trackers** - No analytics services
-- **No advertisements** - No ad networks
-- **No external CDNs** - All assets bundled locally
-- **No data sharing** - We never share your data
-
-## Data Retention
-
-- **Settings** - Stored until you uninstall the extension or clear data
-- **Extracted emails** - Only displayed in session, never stored permanently
-- **No logs** - We don't log your extraction activities
-
-## Security
-
-- **Content Security Policy** - Strict CSP prevents inline scripts and external resources
-- **Isolated execution** - Web Workers run in isolated threads
-- **No network requests** - Extension makes no network calls by default
-- **Manifest V3** - Uses latest Chrome extension security model
-
-## Children's Privacy
-
-This extension is not directed at children under 13. We do not knowingly collect information from children under 13.
-
-## Changes to This Policy
-
-We may update this privacy policy to reflect:
-
-- New optional features (with opt-in required)
-- Changes in Chrome extension APIs
-- User feedback and requests
-
-We will notify you of significant changes via:
-
-- Extension update notes
-- In-app notification on first launch after update
-
-## Your Rights
+### GDPR (Europe), CCPA (California), and Other Privacy Laws
 
 You have the right to:
 
-- **Access** - View all settings stored locally
-- **Delete** - Clear all data by uninstalling extension
-- **Port** - Export your keyword filters and preferences
-- **Object** - Choose not to use opt-in features
+- **Know what data we have** → We have none of your personal data
+- **Delete your data** → Uninstall the extension (deletes all settings)
+- **Object to processing** → Don't use the extension if you prefer
+- **Data portability** → Export your settings anytime (via Clear button)
 
-## Contact
+### Children's Privacy (COPPA Compliance)
 
-For privacy questions or concerns:
-
-- **GitHub Issues:** [https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool/issues](https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool/issues)
-- **Email:** [Your contact email here]
-
-## Open Source
-
-This extension is open source. You can:
-
-- **Review the code** on GitHub
-- **Audit** how data is processed
-- **Contribute** improvements
-- **Fork** and modify for your needs
-
-**Repository:** [https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool](https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool)
-
-## Compliance
-
-- **GDPR** - No personal data collected; local processing
-- **CCPA** - No data sold or shared with third parties
-- **Chrome Web Store Policies** - Fully compliant with extension policies
+This extension does not collect any information from anyone, including children under 13.
 
 ---
 
-## Summary (TL;DR)
+## Security
 
-**100% local processing** - Your data never leaves your device  
-**No tracking** - Zero analytics or telemetry  
-**No accounts** - No login required  
-**Open source** - Code is auditable  
-**You control** - Cancel, clear, or export anytime  
+**How we keep things secure:**
 
-**Questions?** Open an issue on GitHub or contact us directly.
+- ✅ No internet connection = no data breaches
+- ✅ No servers = nothing to hack
+- ✅ Chrome's built-in security protects your settings
+- ✅ Open source code = anyone can verify our claims
+
+**What you should know:**
+- Your extracted emails are shown on screen but **not saved**
+- Closing the extension tab clears results from memory
+- Settings persist until you uninstall
 
 ---
 
-**WhoisExtractor: Email Tool** - Privacy-First Email Extraction
+## Third Parties
+
+**Do we share data with third parties?**  
+**No.** We don't share data because we don't collect data.
+
+**Do we use analytics (Google Analytics, etc.)?**  
+**No.** We don't track usage.
+
+**Do we use ads or trackers?**  
+**No.** Completely free of tracking.
+
+---
+
+## Updates to This Policy
+
+We may update this policy if:
+- We add new features (we'll ask permission first)
+- Laws change (we'll stay compliant)
+- Users request clarifications
+
+**How you'll know:**
+- We'll show a notification in the extension
+- The "Last Updated" date at the top will change
+- For major changes, we'll ask you to review again
+
+---
+
+## International Compliance
+
+This extension complies with privacy laws worldwide:
+
+- 🇪🇺 **GDPR** (Europe) - No personal data processed
+- 🇺🇸 **CCPA** (California) - No data sold or shared
+- 🇬🇧 **UK GDPR** - Same as EU GDPR
+- 🇨🇦 **PIPEDA** (Canada) - No data collection
+- 🇦🇺 **Privacy Act** (Australia) - Local processing only
+- 🇧🇷 **LGPD** (Brazil) - No personal data
+- 🇮🇳 **IT Act** (India) - Compliant with data protection rules
+- 🇯🇵 **APPI** (Japan) - No cross-border data transfer
+- 🇨🇳 **PIPL** (China) - Local processing only
+
+**Common to all:** We don't collect, store, or transfer any personal data.
+
+---
+
+## Contact & Support
+
+**Questions about privacy?**
+
+- 📧 Email: [Your email or support contact]
+- 🐛 GitHub Issues: [https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool/issues](https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool/issues)
+- 📖 Open Source Code: [https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool](https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool)
+
+**Want to verify our claims?**  
+The code is open source - you or any developer can review it to confirm we're telling the truth.
+
+---
+
+## Easy Summary (TL;DR)
+
+| Question | Answer |
+|----------|--------|
+| Does it send my data anywhere? | No, everything stays on your computer |
+| Do you track me? | No, zero tracking |
+| Do I need to create an account? | No, no sign-up needed |
+| Where is my data stored? | Only in your browser (Chrome storage) |
+| Can I delete my data? | Yes, uninstall the extension |
+| Is it safe for my private emails? | Yes, we never see them |
+| Is it free? | Yes, completely free |
+| Can I trust you? | Code is open source - verify yourself |
+
+---
+
+## Legal Notices
+
+**Data Controller:** ProgrammerNomad (Developer)  
+**Data Processing:** None (no personal data collected)  
+**Legal Basis:** Not applicable (no data processing)  
+**Data Location:** Your device only (no servers)  
+**Retention Period:** Until extension uninstalled  
+**Supervisory Authority:** Contact your local data protection authority if concerned
+
+---
+
+**WhoisExtractor: Email Tool** - Privacy-First, Local Processing, Zero Tracking
+
+*We can't lose your data because we never have it in the first place.*

@@ -5,6 +5,7 @@ interface ProgressBarProps {
   isExtracting: boolean;
   totalCount: number;
   onCancel?: () => void;
+  loadingMessage?: string;
 }
 
 export const ProgressBar: React.FC<ProgressBarProps> = ({
@@ -12,6 +13,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   isExtracting,
   totalCount,
   onCancel,
+  loadingMessage,
 }) => {
   if (!isExtracting && progress === 0) {
     return null;
@@ -22,7 +24,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-4">
           <span className="text-base font-bold text-text-dark">
-            {isExtracting ? "Extracting..." : "Extraction Complete"}
+            {loadingMessage || (isExtracting ? "Extracting..." : "Extraction Complete")}
           </span>
           <span className="text-sm font-semibold text-brand-blue bg-brand-lightBlue px-4 py-1 rounded-full">
             {totalCount.toLocaleString()} emails found

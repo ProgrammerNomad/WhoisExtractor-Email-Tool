@@ -3,9 +3,20 @@
  * Uses incremental .exec() scanning to avoid loading entire input into memory
  */
 
-// Email regex pattern - adjust strictness as needed
-// Matches: username@domain.tld
-export const EMAIL_REGEX = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
+import type { ExtractionOptions } from "../types";
+
+// Improved email regex with word boundaries to avoid invalid prefixes
+export const EMAIL_REGEX = /\b[a-zA-Z0-9][a-zA-Z0-9._%+-]*@[a-zA-Z0-9][a-zA-Z0-9.-]*\.[a-zA-Z]{2,}\b/g;
+
+/**
+ * Extract and clean an individual email
+ * @param rawEmail - Raw email match from regex
+ * @returns Cleaned email string
+ */
+function cleanEmail(rawEmail: string): string {
+  // Clean up trailing dots or hyphens
+  return rawEmail.replace(/[.-]+$/, '').toLowerCase();
+}
 
 /**
  * Extract emails from a text chunk using incremental regex scanning
@@ -22,7 +33,7 @@ export function extractEmails(chunk: string, seen: Set<string>): string[] {
 
   // Use .exec() in a loop for incremental scanning
   while ((match = EMAIL_REGEX.exec(chunk)) !== null) {
-    const email = match[0].toLowerCase();
+    const email = cleanEmail(match[0]);
 
     // Deduplicate: only add if not seen before
     if (!seen.has(email)) {
@@ -32,6 +43,67 @@ export function extractEmails(chunk: string, seen: Set<string>): string[] {
   }
 
   return newEmails;
+}
+
+/**
+ * Apply all extraction options to a list of emails
+ * @param emails - Raw extracted emails
+ * @param options - Extraction options to apply
+ * @returns Processed emails array
+ */
+export function applyOptions(emails: string[], options: ExtractionOptions): string[] {
+  let processed = [...emails];
+
+  // Apply keyword filter (exclude mode)
+  if (options.keywordsEnabled && options.keywords.length > 0) {
+    processed = processed.filter(email => {
+      return !options.keywords.some(keyword => 
+        email.toLowerCase().includes(keyword.toLowerCase())
+      );
+    });
+  }
+
+  // Apply string filter (include or exclude)
+  if (options.filterStrings.length > 0) {
+    if (options.filterType === "include") {
+      processed = processed.filter(email => 
+        options.filterStrings.some(str => 
+          email.toLowerCase().includes(str.toLowerCase())
+        )
+      );
+    } else {
+      processed = processed.filter(email => 
+        !options.filterStrings.some(str => 
+          email.toLowerCase().includes(str.toLowerCase())
+        )
+      );
+    }
+  }
+
+  // Apply lowercase conversion (already done in extraction, but ensure consistency)
+  if (options.lowercase) {
+    processed = processed.map(email => email.toLowerCase());
+  }
+
+  // Apply numeric domain removal
+  if (options.removeNumeric) {
+    processed = processed.filter(email => {
+      const domain = email.split('@')[1];
+      return domain && !/^\d+\.\d+\.\d+\.\d+$/.test(domain);
+    });
+  }
+
+  // Apply deduplication (already done during extraction, but ensure)
+  if (options.dedupe) {
+    processed = [...new Set(processed)];
+  }
+
+  // Apply sorting (only if reasonable count)
+  if (options.sort && processed.length <= 50000) {
+    processed.sort();
+  }
+
+  return processed;
 }
 
 /**
@@ -94,3 +166,4 @@ export function groupByDomain(emails: string[]): Map<string, string[]> {
 
   return grouped;
 }
+

@@ -14,8 +14,16 @@ export interface ExtractionOptions {
   sort: boolean;
   dedupe: boolean;
   separator: string;
-  keywords?: string[];
-  groupBy?: "domain" | "none";
+  keywords: string[];
+  keywordsEnabled: boolean;
+  groupBy: "domain" | "none" | "count";
+  groupByCount?: number;
+  removeNumeric: boolean;
+  extractionType: "email" | "url";
+  filterType: "include" | "exclude";
+  filterStrings: string[];
+  lowercase: boolean;
+  customSeparator?: string;
 }
 
 // Start extraction message (Popup → Background)

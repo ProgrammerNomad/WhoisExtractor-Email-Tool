@@ -5,7 +5,7 @@
  */
 
 import { chunkWithOverlap, calculateProgress } from "../utils/chunking";
-import { extractEmails } from "../utils/regex";
+import { extractEmails, applyOptions } from "../utils/regex";
 import { isMemorySafe } from "../utils/dedup";
 import type {
   StartWorkerMessage,
@@ -113,16 +113,13 @@ async function handleStart(message: StartWorkerMessage): Promise<void> {
       sendBatch(id, batch, 100, seen.size);
     }
 
-    // Apply final processing (sorting if requested)
-    const finalEmails = Array.from(seen);
+    // Apply final processing options to all extracted emails
+    const allEmails = Array.from(seen);
+    const finalEmails = applyOptions(allEmails, options);
     const shouldSort = options.sort && finalEmails.length <= 50000;
 
-    if (shouldSort) {
-      finalEmails.sort((a, b) => a.localeCompare(b));
-    }
-
     // Send completion message
-    sendComplete(id, seen.size, shouldSort);
+    sendComplete(id, finalEmails.length, shouldSort);
   } catch (error) {
     sendError(id, error instanceof Error ? error.message : "Unknown error");
   } finally {
