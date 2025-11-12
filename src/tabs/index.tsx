@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./index.css";
 import { InputSection } from "./components/InputSection";
 import { OptionsPanel, type ExtractionOptions } from "./components/OptionsPanel";
@@ -16,11 +16,28 @@ import { useLanguage, interpolate } from "./hooks/useLanguage";
 import { recordExtraction, getTotalEmailsExtracted } from "~utils/reviewPrompt";
 import { shouldShowUpdateNotification, getUpdateData } from "~utils/updateNotification";
 
+/**
+ * Format large numbers in compact format (K, M, B)
+ * Examples: 1234 → 1.2K, 43342 → 43.3K, 1500000 → 1.5M
+ */
+function formatCompactNumber(num: number): string {
+  if (num < 10000) {
+    return num.toLocaleString(); // Show full number up to 9,999
+  } else if (num < 1000000) {
+    return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K'; // Thousands
+  } else if (num < 1000000000) {
+    return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M'; // Millions
+  } else {
+    return (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'B'; // Billions
+  }
+}
+
 function TabsIndex() {
   const { t, isLoading: langLoading } = useLanguage();
   const [input, setInput] = useState("");
   const [updateVersion, setUpdateVersion] = useState<string | null>(null);
   const [grandTotal, setGrandTotal] = useState<number>(0); // Lifetime total across all sessions
+  const lastRecordedCount = useRef<number>(0); // Track last recorded extraction
   const [options, setOptions] = useState<ExtractionOptions>({
     sort: true,
     dedupe: true,
@@ -76,6 +93,24 @@ function TabsIndex() {
     return () => chrome.storage.onChanged.removeListener(handleStorageChange);
   }, []);
 
+  // Auto-record extraction when totalCount updates (extraction complete)
+  useEffect(() => {
+    const recordCount = async () => {
+      // Only record if:
+      // 1. Extraction is complete (!isExtracting)
+      // 2. There are results (totalCount > 0)
+      // 3. No errors
+      // 4. Haven't already recorded this exact count
+      if (totalCount > 0 && !isExtracting && !error && lastRecordedCount.current !== totalCount) {
+        console.log(`Recording extraction: ${totalCount} emails`);
+        await recordExtraction(totalCount);
+        lastRecordedCount.current = totalCount;
+      }
+    };
+
+    recordCount();
+  }, [totalCount, isExtracting, error]);
+
   // Initialize options from settings
   useEffect(() => {
     if (!settingsLoading) {
@@ -128,19 +163,14 @@ function TabsIndex() {
   const handleExtract = async () => {
     if (input.trim()) {
       await startExtraction(input, options);
-      // Record successful extraction for review prompt
-      // Wait a bit for extraction to complete, then record the count
-      setTimeout(async () => {
-        if (totalCount > 0) {
-          await recordExtraction(totalCount);
-        }
-      }, 200);
+      // Grand total recording now handled by useEffect watching totalCount
     }
   };
 
   const handleClear = () => {
     setInput("");
     clearResults();
+    lastRecordedCount.current = 0; // Reset the tracking ref
   };
 
   const handleFileUpload = async (file: File) => {
@@ -202,34 +232,28 @@ function TabsIndex() {
               </p>
             </div>
             <div className="flex items-center gap-4">
-              {/* Grand Total - Always visible if > 0 */}
-              {grandTotal > 0 && (
-                <div className="bg-white bg-opacity-10 rounded-lg px-4 py-2 border border-white border-opacity-20">
-                  <div className="text-xs text-blue-100 uppercase tracking-wide mb-1">
-                    {t.header.totalExtracted || "Total Extracted"}
+              {/* Current Extraction Count - Show when extracting */}
+              {totalCount > 0 && (
+                <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/20 hover:bg-white/25 transition-colors text-white">
+                  <div className="text-xs text-blue-100 uppercase tracking-wide font-medium whitespace-nowrap">
+                    {t.header.current || "Current"}
                   </div>
-                  <div className="text-xl font-bold text-white">
-                    {grandTotal.toLocaleString()}
+                  <div className="text-lg font-bold text-white">
+                    {formatCompactNumber(totalCount || 0)}
                   </div>
                 </div>
               )}
               
-              {/* Current Extraction Count */}
-              {totalCount > 0 && (
-                <div className="bg-white bg-opacity-20 rounded-lg px-4 py-2">
-                  <div className="text-xs text-blue-100 uppercase tracking-wide mb-1">
-                    {t.header.current || "Current"}
-                  </div>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-2xl font-bold text-white">
-                      {totalCount.toLocaleString()}
-                    </span>
-                    <span className="text-sm text-blue-100">
-                      {interpolate(t.header.emailCount, { count: totalCount })}
-                    </span>
-                  </div>
+              {/* Grand Total - Always visible */}
+              <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/10 hover:bg-white/15 border border-white/20 transition-colors text-white">
+                <div className="text-xs text-blue-100 uppercase tracking-wide font-medium whitespace-nowrap">
+                  {t.header.totalExtracted || "Total"}
                 </div>
-              )}
+                <div className="text-lg font-bold text-white">
+                  {formatCompactNumber(grandTotal || 0)}
+                </div>
+              </div>
+              
               <LanguageSwitcher />
               <ThemeSwitcher />
             </div>
