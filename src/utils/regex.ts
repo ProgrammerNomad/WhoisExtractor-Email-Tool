@@ -57,9 +57,39 @@ export function applyOptions(emails: string[], options: ExtractionOptions): stri
   // Apply keyword filter (exclude mode)
   if (options.keywordsEnabled && options.keywords.length > 0) {
     processed = processed.filter(email => {
-      return !options.keywords.some(keyword => 
-        email.toLowerCase().includes(keyword.toLowerCase())
-      );
+      const lowerEmail = email.toLowerCase();
+      const [localPart, domainPart] = lowerEmail.split('@');
+      
+      return !options.keywords.some(keyword => {
+        const lowerKeyword = keyword.toLowerCase().trim();
+        
+        // Skip empty keywords
+        if (!lowerKeyword) return false;
+        
+        // Pattern 1: Keyword ends with @ (e.g., "admin@", "support@")
+        // Match if email starts with this pattern
+        if (lowerKeyword.endsWith('@')) {
+          const prefix = lowerKeyword.slice(0, -1);
+          return localPart === prefix || localPart.startsWith(prefix + '+');
+        }
+        
+        // Pattern 2: Keyword starts with @ (e.g., "@contact", "@gmail")
+        // Match if keyword appears in domain or local part
+        if (lowerKeyword.startsWith('@')) {
+          const suffix = lowerKeyword.slice(1);
+          return domainPart.includes(suffix) || localPart.includes(suffix);
+        }
+        
+        // Pattern 3: Domain-only keyword (e.g., "qq.com", "yahoo.com")
+        // Match if it's the exact domain or subdomain
+        if (lowerKeyword.includes('.')) {
+          return domainPart === lowerKeyword || domainPart.endsWith('.' + lowerKeyword);
+        }
+        
+        // Pattern 4: Generic keyword (e.g., "admin", "support", "webmaster")
+        // Match if found in local part OR domain
+        return localPart.includes(lowerKeyword) || domainPart.includes(lowerKeyword);
+      });
     });
   }
 

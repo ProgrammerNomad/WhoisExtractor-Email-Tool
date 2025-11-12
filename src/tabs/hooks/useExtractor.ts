@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import type { ExtractionOptions } from "../components/OptionsPanel";
 import type { Message, BatchMessage, CompleteMessage, ErrorMessage } from "../../types";
+import { applyOptions } from "../../utils/regex";
 
 interface ExtractionState {
   isExtracting: boolean;
@@ -21,6 +22,8 @@ export const useExtractor = () => {
 
   const portRef = useRef<chrome.runtime.Port | null>(null);
   const currentSessionIdRef = useRef<string | null>(null);
+  const currentOptionsRef = useRef<ExtractionOptions | null>(null);
+  const rawResultsRef = useRef<string[]>([]);
 
   // Initialize Port connection to background
   useEffect(() => {
@@ -84,11 +87,19 @@ export const useExtractor = () => {
    * Handle batch results from worker
    */
   const handleBatchMessage = useCallback((message: BatchMessage) => {
+    // Accumulate raw results
+    rawResultsRef.current = [...rawResultsRef.current, ...message.emails];
+    
+    // Apply options to get filtered results for display
+    const filteredResults = currentOptionsRef.current 
+      ? applyOptions(rawResultsRef.current, currentOptionsRef.current)
+      : rawResultsRef.current;
+    
     setState((prev) => ({
       ...prev,
-      results: [...prev.results, ...message.emails],
+      results: filteredResults,
       progress: message.progressPercent,
-      totalCount: message.totalCount,
+      totalCount: filteredResults.length, // Show filtered count
     }));
   }, []);
 
@@ -96,11 +107,17 @@ export const useExtractor = () => {
    * Handle extraction completion
    */
   const handleCompleteMessage = useCallback((message: CompleteMessage) => {
+    // Apply final options to raw results
+    const filteredResults = currentOptionsRef.current 
+      ? applyOptions(rawResultsRef.current, currentOptionsRef.current)
+      : rawResultsRef.current;
+    
     setState((prev) => ({
       ...prev,
       isExtracting: false,
       progress: 100,
-      totalCount: message.totalCount,
+      totalCount: filteredResults.length,
+      results: filteredResults,
     }));
     currentSessionIdRef.current = null;
   }, []);
@@ -133,6 +150,8 @@ export const useExtractor = () => {
       // Generate unique session ID
       const sessionId = `session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
       currentSessionIdRef.current = sessionId;
+      currentOptionsRef.current = options; // Store options for filtering
+      rawResultsRef.current = []; // Reset raw results
 
       // Reset state
       setState({
@@ -187,6 +206,8 @@ export const useExtractor = () => {
       error: null,
     });
     currentSessionIdRef.current = null;
+    currentOptionsRef.current = null;
+    rawResultsRef.current = [];
   }, []);
 
   return {

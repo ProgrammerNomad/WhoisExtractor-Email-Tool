@@ -46,6 +46,16 @@ export const OptionsPanel: React.FC<OptionsPanelProps> = ({
   const [filterStringsText, setFilterStringsText] = React.useState("");
   const sortThreshold = 50000;
 
+  // Initialize keywords from default text when keywords are enabled but array is empty
+  React.useEffect(() => {
+    if (options.keywordsEnabled && options.keywords.length === 0 && keywordText) {
+      const keywords = keywordText.split(',').map(k => k.trim()).filter(k => k);
+      if (keywords.length > 0) {
+        setOptions({ ...options, keywords });
+      }
+    }
+  }, [options.keywordsEnabled, options.keywords.length, keywordText]); // Watch for toggle changes
+
   const SEPARATOR_OPTIONS_I18N = [
     { value: "\n", label: t.options.outputOptions.separators.newline },
     { value: ", ", label: t.options.outputOptions.separators.comma },
