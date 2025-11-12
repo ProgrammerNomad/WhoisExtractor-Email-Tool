@@ -3,7 +3,7 @@
   "displayName": "WhoisExtractor: Email Tool",
   "version": "1.0.1",
   "description": "Local email extraction from text and files - Multi-language support",
-  "author": "ProgrammerNomad",
+  "author": "ProgrammerNomad <shiv@srapsware.com>",
   "license": "MIT",
   "default_locale": "en",
   "scripts": {

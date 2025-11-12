@@ -151,7 +151,7 @@ This extension complies with privacy laws worldwide:
 
 **Questions about privacy?**
 
-- 📧 Email: [Your email or support contact]
+- 📧 Email: shiv@srapsware.com
 - 🐛 GitHub Issues: [https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool/issues](https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool/issues)
 - 📖 Open Source Code: [https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool](https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool)
 
