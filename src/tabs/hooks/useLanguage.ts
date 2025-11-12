@@ -23,6 +23,11 @@ export function useLanguage() {
         if (storedLanguage && translations[storedLanguage as SupportedLanguageCode]) {
           // Use stored language
           setLanguageState(storedLanguage as SupportedLanguageCode);
+          
+          // Update document direction for RTL languages
+          const lang = getLanguage(storedLanguage);
+          document.documentElement.dir = lang?.rtl ? "rtl" : "ltr";
+          document.documentElement.lang = storedLanguage;
         } else {
           // Auto-detect browser language
           const detected = detectBrowserLanguage();
@@ -32,6 +37,11 @@ export function useLanguage() {
             setLanguageState(detected as SupportedLanguageCode);
             // Save detected language
             await chrome.storage.local.set({ [STORAGE_KEY]: detected });
+            
+            // Update document direction for RTL languages
+            const lang = getLanguage(detected);
+            document.documentElement.dir = lang?.rtl ? "rtl" : "ltr";
+            document.documentElement.lang = detected;
           }
         }
       } catch (error) {
@@ -43,6 +53,32 @@ export function useLanguage() {
     };
 
     loadLanguage();
+  }, []);
+
+  // Listen for storage changes to sync language across all components
+  useEffect(() => {
+    const handleStorageChange = (
+      changes: { [key: string]: chrome.storage.StorageChange },
+      areaName: string
+    ) => {
+      if (areaName === "local" && changes[STORAGE_KEY]) {
+        const newLanguage = changes[STORAGE_KEY].newValue as SupportedLanguageCode;
+        if (newLanguage && translations[newLanguage]) {
+          setLanguageState(newLanguage);
+          
+          // Update document direction for RTL languages
+          const lang = getLanguage(newLanguage);
+          document.documentElement.dir = lang?.rtl ? "rtl" : "ltr";
+          document.documentElement.lang = newLanguage;
+        }
+      }
+    };
+
+    chrome.storage.onChanged.addListener(handleStorageChange);
+
+    return () => {
+      chrome.storage.onChanged.removeListener(handleStorageChange);
+    };
   }, []);
 
   // Change language and persist to storage
