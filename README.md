@@ -280,8 +280,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 - 🐛 Bug Reports: [Open an issue](https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool/issues)
 - 💡 Feature Requests: [Open an issue](https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool/issues)
 - ⭐ Review: [Leave a review on Chrome Web Store](https://chromewebstore.google.com/detail/whoisextractor-email-tool/hlkfbiaphhmngdlcfgfagfjicbadomnj/reviews)
-- Review: [Leave a review on Chrome Web Store](https://chromewebstore.google.com/detail/whoisextractor-email-tool/hlkfbiaphhmngdlcfgfagfjicbadomnj/reviews)
-- Discussions: [GitHub Discussions](https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool/discussions)
+- 💬 Discussions: [GitHub Discussions](https://github.com/ProgrammerNomad/WhoisExtractor-Email-Tool/discussions)
 
 ---
 
