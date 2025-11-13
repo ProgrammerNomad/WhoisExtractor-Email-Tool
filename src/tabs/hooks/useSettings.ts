@@ -29,7 +29,7 @@ export const useSettings = () => {
     dedupe: true,
     separator: "\n",
     keywords: settings.keywords,
-    keywordsEnabled: false, // Disabled by default, user must enable
+    keywordsEnabled: settings.keywordsEnabled, // Restore from saved settings
     groupBy: "none",
     removeNumeric: settings.removeNumeric,
     extractionType: "email",

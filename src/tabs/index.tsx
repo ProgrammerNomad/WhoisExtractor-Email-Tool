@@ -15,6 +15,7 @@ import { useSettings } from "./hooks/useSettings";
 import { useLanguage, interpolate } from "./hooks/useLanguage";
 import { recordExtraction, getTotalEmailsExtracted } from "~utils/reviewPrompt";
 import { shouldShowUpdateNotification, getUpdateData } from "~utils/updateNotification";
+import { STORAGE_KEY } from "~types";
 
 /**
  * Format large numbers in compact format (K, M, B)
@@ -165,6 +166,20 @@ function TabsIndex() {
     chrome.runtime.onMessage.addListener(handleMessage);
     return () => chrome.runtime.onMessage.removeListener(handleMessage);
   }, []);
+
+  // Save keywordsEnabled state to settings whenever it changes
+  useEffect(() => {
+    if (!settingsLoading) {
+      chrome.storage.local.get([STORAGE_KEY], (result) => {
+        const currentSettings = result[STORAGE_KEY] || {};
+        if (currentSettings.keywordsEnabled !== options.keywordsEnabled) {
+          chrome.storage.local.set({
+            [STORAGE_KEY]: { ...currentSettings, keywordsEnabled: options.keywordsEnabled }
+          });
+        }
+      });
+    }
+  }, [options.keywordsEnabled, settingsLoading]);
 
   const handleExtract = async () => {
     if (input.trim()) {

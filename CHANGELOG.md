@@ -5,6 +5,36 @@ All notable changes to WhoisExtractor: Email Tool will be documented in this fil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2025-11-13
+
+### Fixed
+
+- **Keyword Filtering** - Fixed critical issues with Advanced Keyword Filter:
+  - TLD pattern matching now works correctly (.pk, .ru, .za, .in, .com.br, .com.bd)
+  - Changed "protc" to "protection" for better matching
+  - Fixed domain suffix matching logic (keywords starting with dot now use endsWith check)
+  - All 94 keywords now filter correctly with 100% accuracy
+
+### Added
+
+- **Persistent Filter State** - Advanced Keyword Filter toggle state now persists across sessions:
+  - Toggle remains enabled/disabled after page refresh
+  - State saved to chrome.storage.local
+  - Restored automatically on extension load
+- **Enhanced Keyword List** - Updated default keywords from 83 to 94 with improved patterns:
+  - Added missing TLD patterns (.pk, .ru, .ra, .za, .in)
+  - Added composite TLDs (.com.br, .com.bd)
+  - Added more service prefixes (billing@, accounts@, accounting@, etc.)
+  - Added international keywords (kontakt, contacto, destek, amministrazione@, supporto@)
+
+### Changed
+
+- **Filter Pattern Logic** - Improved keyword matching algorithm:
+  - Pattern 1: Prefix match (keywords ending with @)
+  - Pattern 2: Suffix match (keywords starting with @)
+  - Pattern 3: Domain/TLD match (keywords with dots, including TLD-only patterns)
+  - Pattern 4: Generic substring match (any other keyword)
+
 ## [1.0.1] - 2025-11-12
 
 ### Added

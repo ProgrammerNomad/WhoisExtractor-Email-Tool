@@ -80,9 +80,13 @@ export function applyOptions(emails: string[], options: ExtractionOptions): stri
           return domainPart.includes(suffix) || localPart.includes(suffix);
         }
         
-        // Pattern 3: Domain-only keyword (e.g., "qq.com", "yahoo.com")
-        // Match if it's the exact domain or subdomain
+        // Pattern 3: Domain/TLD keyword (e.g., "qq.com", ".com.br", ".pk")
         if (lowerKeyword.includes('.')) {
+          // TLD patterns starting with dot (e.g., ".pk", ".com.br")
+          if (lowerKeyword.startsWith('.')) {
+            return domainPart.endsWith(lowerKeyword);
+          }
+          // Full domain patterns (e.g., "qq.com", "yahoo.com")
           return domainPart === lowerKeyword || domainPart.endsWith('.' + lowerKeyword);
         }
         
